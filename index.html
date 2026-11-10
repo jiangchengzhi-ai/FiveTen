@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>江山 · 五代十国疆域时序 907–979</title>
+<meta name="description" content="以时间轴浏览五代十国（907–979）各政权疆域变化与人物关系：后梁、后唐、后晋、后汉、后周、十国与辽、大理，逐年查看兴替、都城、人物性格与结局。">
+<link rel="stylesheet" href="css/atlas.css">
+</head>
+<body data-view="map">
+<div class="app">
+
+  <header class="top">
+    <div class="brand">
+      <b>江山</b><span class="brand-sub">·五代十国</span><span class="seal">疆域时序</span><span class="range">八七五 — 九七九</span>
+    </div>
+    <div class="searchbox">
+      <input id="search" type="search" placeholder="搜人物 / 政权 / 大事" autocomplete="off" aria-label="搜索人物、政权或大事">
+      <div id="search-results" class="search-results" hidden></div>
+    </div>
+    <div class="viewtabs" role="tablist" aria-label="视图">
+      <button data-view="map" class="on" role="tab">疆域</button>
+      <button data-view="people" role="tab">人物</button>
+      <button data-view="chrono" role="tab">年表</button>
+      <button data-view="stats" role="tab">数据</button>
+    </div>
+    <div class="chips" role="group" aria-label="分幕跳转">
+      <button data-year="907">梁晋争霸</button>
+      <button data-year="923">后唐一统</button>
+      <button data-year="936">燕云割让</button>
+      <button data-year="947">契丹入汴</button>
+      <button data-year="951">周汉并立</button>
+      <button data-year="960">宋承周统</button>
+      <button data-year="979">十国终局</button>
+    </div>
+    <div class="layers" role="group" aria-label="图层开关">
+      <label><input type="checkbox" data-layer="places" checked>州府</label>
+      <label><input type="checkbox" data-layer="rivers" checked>河湖</label>
+      <label><input type="checkbox" data-layer="marks" checked>山川注记</label>
+      <label><input type="checkbox" data-layer="neighbors" checked>周边</label>
+    </div>
+    <button id="book-btn" class="help-btn" type="button" aria-label="按书章节跳转" title="按书章节跳转（B）">书</button>
+    <button id="help-btn" class="help-btn" type="button" aria-label="帮助与说明" title="帮助（?）">?</button>
+  </header>
+
+  <main>
+    <section class="mapwrap" aria-label="地图区">
+      <div id="map"></div>
+      <div class="map-hint">滚轮缩放 · 拖拽平移 · 点击政权看人物</div>
+      <div class="map-legend" id="legend" aria-label="本年政权图例"></div>
+      <div class="map-controls">
+        <button id="export-png" type="button" title="把当前地图存为 PNG">存图</button>
+        <button id="reset-view" type="button">复位视图</button>
+      </div>
+      <div class="tip" id="tip" hidden></div>
+    </section>
+
+    <section class="peoplewrap" id="people-wrap" aria-label="人物关系图" hidden>
+      <svg id="people-stage" viewBox="0 0 1000 720" preserveAspectRatio="xMidYMid meet"
+           role="img" aria-label="五代十国人物关系图"></svg>
+      <div class="map-hint">圆点＝人物 · 线＝关系 · 拖动时间轴看人物更替</div>
+      <div class="people-legend" id="people-legend"></div>
+      <div class="tip" id="p-tip" hidden></div>
+    </section>
+
+    <section class="chronowrap" id="chrono-wrap" aria-label="政权年表" hidden>
+      <svg id="chrono-stage" viewBox="0 0 1000 760" preserveAspectRatio="xMidYMid meet"
+           role="img" aria-label="五代十国政权寿命年表"></svg>
+      <div class="map-hint">横条＝政权存续区间 · 菱形＝大事 · 点击横条或空白跳年</div>
+      <div class="tip" id="chrono-tip" hidden></div>
+    </section>
+
+    <section class="statswrap" id="stats-wrap" aria-label="数据概览与自检" hidden>
+      <div id="stats-body"></div>
+    </section>
+
+    <aside class="side" aria-label="信息栏">
+      <div class="year-block">
+        <div id="year-big">907</div>
+        <div class="year-meta">
+          <span id="year-ganzhi">丁卯年</span>
+          <span id="era-line">后梁·开平元年</span>
+        </div>
+      </div>
+
+      <div id="side-map">
+        <h2>本年大事</h2>
+        <div id="events"></div>
+        <h2>本年政权</h2>
+        <div id="regime-list"></div>
+        <h2>本年疆域变化</h2>
+        <div id="terr-chg"></div>
+      </div>
+
+      <div id="side-people" hidden>
+        <h2>人物概览</h2>
+        <div id="p-summary"></div>
+        <h2>结局统计</h2>
+        <div id="p-stats"></div>
+        <h2>本年结局</h2>
+        <div id="p-deaths"></div>
+        <h2>本年关系变化</h2>
+        <div id="p-relchg"></div>
+        <div id="p-detail" hidden></div>
+      </div>
+
+      <div id="side-chrono" hidden>
+        <h2>本年存续</h2>
+        <div id="c-now"></div>
+        <h2>政权年表</h2>
+        <div id="c-list"></div>
+      </div>
+
+      <div class="src-foot" id="foot-sources"></div>
+    </aside>
+  </main>
+
+  <footer class="timeline" aria-label="时间轴">
+    <div class="controls">
+      <button id="prev" type="button" aria-label="上一年">◀</button>
+      <button id="play" type="button">▶ 播放</button>
+      <button id="next" type="button" aria-label="下一年">▶</button>
+    </div>
+    <div class="track">
+      <div id="ticks"></div>
+      <div id="dynasty-band" class="dynasty-band" aria-label="中原王朝分期带"></div>
+      <div id="event-track"></div>
+      <div class="rail"><div id="fill"></div><div id="thumb"></div></div>
+      <input id="slider" type="range" min="907" max="979" step="1" value="907" aria-label="年份">
+    </div>
+  </footer>
+
+</div>
+
+<div id="book-modal" class="help-modal book-modal" hidden>
+  <div class="help-panel book-panel" role="dialog" aria-modal="true" aria-labelledby="book-title">
+    <button id="book-close" class="help-close" type="button" aria-label="关闭">×</button>
+    <h2 id="book-title">按书章节跳转</h2>
+    <p class="help-lead">麦老师《五代十国全史》八部 78 章。点章节即跳到该章对应的年份；章节年份按正文纪年推算，为约数，个别章可能偏早或偏晚。</p>
+    <div id="book-body"></div>
+    <p class="help-version">章节与年份映射见 <code>research/麦老师书稿-章节.json</code></p>
+  </div>
+</div>
+
+<div id="help-modal" class="help-modal" hidden>
+  <div class="help-panel" role="dialog" aria-modal="true" aria-labelledby="help-title">
+    <button id="help-close" class="help-close" type="button" aria-label="关闭">×</button>
+    <h2 id="help-title">江山 · 五代十国疆域时序</h2>
+    <p class="help-lead">一条时间轴走完 875–979：疆域怎么变，人物怎么上位与退场，关系怎么结成与断裂。</p>
+    <div id="hp-stats" class="hp-stats"></div>
+
+    <h3>四个视图</h3>
+    <ul>
+      <li><b>疆域</b>：逐年/分期疆域，点政权看君主世系与结局，滚轮缩放、拖拽平移。</li>
+      <li><b>人物</b>：按政权分簇的关系网，随年份增减；侧栏给出「本年结局」与「本年关系变化」。</li>
+      <li><b>年表</b>：政权寿命横条 + 大事年刻，一眼看谁先亡、谁与谁并存。</li>
+      <li><b>数据</b>：规模指标、9 项完整性自检、每十年事件数、政权寿命、结局与关系分布。</li>
+    </ul>
+
+    <h3>操作</h3>
+    <ul>
+      <li>拖动/点击底部时间轴；<b>空格</b>播放，<b>← →</b>逐年，<b>1–4</b>切视图，<b>?</b>开本面板，<b>Esc</b>关闭。</li>
+      <li>顶栏搜索可搜「人物 / 政权 / 大事 / 州府」，命中后自动切视图、跳年份、选中对象。</li>
+      <li>地址栏会同步成 <code>#view=people&amp;year=950</code>，复制即分享同一画面。</li>
+    </ul>
+
+    <h3>史料与口径</h3>
+    <p>骨架为《旧唐书》《新唐书》《旧五代史》《新五代史》《资治通鉴》《十国春秋》《辽史》《宋史》，疆域分期参考谭其骧《中国历史地图集》五代十国卷。疆域为<b>示意性简化边界</b>；人物结局只标到年，不区分月份；大事史源标到「纪 / 传 / 世家」一级，<b>不虚构具体卷次</b>。完整取舍见 <code>research/史料与口径.md</code>。</p>
+
+    <p class="help-version">数据版本 v1.6 · 2026-11-10 · 纯静态离线页面</p>
+  </div>
+</div>
+
+<script src="js/geo.js"></script>
+<script src="js/data.js"></script>
+<script src="js/territories.js"></script>
+<script src="js/people.js"></script>
+<script src="js/people-view.js"></script>
+<script src="js/chrono-view.js"></script>
+<script src="js/stats-view.js"></script>
+<script src="js/search.js"></script>
+<script src="js/help.js"></script>
+<script src="js/book-chapters.js"></script>
+<script src="js/book.js"></script>
+<script src="js/export.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

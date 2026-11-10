@@ -1,0 +1,25 @@
+# 依赖与构建产物
+node_modules/
+*.log
+.DS_Store
+Thumbs.db
+
+# 本地书稿（版权内容，不随仓库分发）
+research/麦老师书稿-年表.json
+research/麦老师书稿-章节.json
+research/麦老师书稿-目录.md
+五代十国全史-麦老师*.zip
+*.epub
+*.azw3
+
+# 打包产物
+*.zip
+!preview/*.png
+
+# 系统临时
+*.tmp
+~$*
+
+# 与本项目无关的本地文件
+history-skills/
+
