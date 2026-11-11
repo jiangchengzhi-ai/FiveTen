@@ -1,6 +1,8 @@
 # 江山 · 五代十国疆域时序（875–979）
 
-![界面](preview/shot-950.png)
+![界面](preview/theme-sand.png)
+
+> **主题**：默认「沙盘」深色主题（军帐推演感）；右上角 ◐ 可切换「史册」浅色主题。
 
 **在线访问**：<https://jiangchengzhi-ai.github.io/FiveTen/>　（GitHub Pages，由 `gh-pages` 分支发布）
 
