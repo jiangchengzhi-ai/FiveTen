@@ -60,6 +60,7 @@
     timer: null,
     selected: null,
     battle: null,
+    battleStep: 0,
     layers: { places: true, rivers: true, marks: true, neighbors: true }
   };
   const lastChg = { gained: [], lost: [] };
@@ -467,11 +468,11 @@
     });
     if (state.battle) {
       const b = (window.BATTLES || []).find(x => x.id === state.battle);
-      if (b && b.year === state.year) drawBattleArrows(b);
+      if (b && b.year === state.year) drawBattleArrows(b, state.battleStep || 0);
     }
   }
 
-  function drawBattleArrows(b) {
+  function drawBattleArrows(b, step) {
     const defs = document.querySelector('#stage defs');
     if (defs && !document.getElementById('battle-arrowhead')) {
       const mk = document.createElementNS(NS, 'marker');
@@ -485,7 +486,11 @@
       pp.setAttribute('class', 'bt-arrowhead');
       mk.appendChild(pp); defs.appendChild(mk);
     }
-    (b.arrows || []).forEach((arr, i) => {
+    const steps = (b.steps && b.steps.length) ? b.steps : [{ arrows: b.arrows || [] }];
+    const upto = Math.max(0, Math.min(steps.length - 1, step || 0));
+    const arrows = [];
+    for (let k = 0; k <= upto; k++) (steps[k].arrows || []).forEach(x => arrows.push({ arr: x, past: k < upto }));
+    arrows.forEach(({ arr, past }, i) => {
       const [x1, y1] = proj(arr.from[0], arr.from[1]);
       const [x2, y2] = proj(arr.to[0], arr.to[1]);
       const mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
@@ -494,20 +499,20 @@
       const cx = mx - dy / len * 26, cy = my + dx / len * 26;
       const path = svgEl('path', {
         d: `M${x1.toFixed(1)} ${y1.toFixed(1)} Q${cx.toFixed(1)} ${cy.toFixed(1)} ${x2.toFixed(1)} ${y2.toFixed(1)}`,
-        class: 'bt-arrow ' + (arr.kind || 'attack'),
+        class: 'bt-arrow ' + (arr.kind || 'attack') + (past ? ' past' : ' current'),
         'marker-end': 'url(#battle-arrowhead)'
       }, gBattle);
       const L = path.getTotalLength ? path.getTotalLength() : 200;
       path.style.strokeDasharray = L;
       path.style.strokeDashoffset = L;
-      const label = svgEl('text', { x: cx.toFixed(1), y: cy.toFixed(1), class: 'bt-arrow-label' }, gBattle);
+      const label = svgEl('text', { x: cx.toFixed(1), y: cy.toFixed(1), class: 'bt-arrow-label' + (past ? ' past' : '') }, gBattle);
       label.textContent = arr.label || '';
     });
     replayBattleArrows();
   }
 
   function replayBattleArrows() {
-    gBattle.querySelectorAll('.bt-arrow').forEach((p, i) => {
+    gBattle.querySelectorAll('.bt-arrow.current').forEach((p, i) => {
       const L = p.style.strokeDasharray;
       p.style.transition = 'none';
       p.style.strokeDashoffset = L;
@@ -520,7 +525,7 @@
   }
 
   window.AtlasMap = {
-    setBattle(id) { state.battle = id; renderBattles(); },
+    setBattle(id, step) { state.battle = id; state.battleStep = step || 0; renderBattles(); },
     replayBattle() { replayBattleArrows(); },
     getYear() { return state.year; }
   };
