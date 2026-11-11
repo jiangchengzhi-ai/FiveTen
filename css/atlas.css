@@ -1451,3 +1451,123 @@ body[data-view="map"] .year-block { display: none; }
   .cb-left { flex-direction: row; align-items: baseline; gap: 8px; }
   .cb-left b { font-size: 19px; }
 }
+
+
+/* ================= 战役复盘 / 政治博弈 ================= */
+body[data-view="battle"] .mapwrap,
+body[data-view="politics"] .mapwrap { display: none; }
+body[data-view="battle"] .side,
+body[data-view="politics"] .side { display: none; }
+body[data-view="battle"] main,
+body[data-view="politics"] main { grid-template-columns: 1fr; }
+.battlewrap, .politicswrap { min-height: 0; overflow-y: auto; padding: 20px 26px 30px; }
+.bw-head h2 { font-family: var(--kai); font-size: 22px; letter-spacing: .12em; margin: 0 0 4px; }
+.bw-head p { font-size: 12.5px; color: var(--ink-3); margin: 0 0 16px; }
+.battle-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.bt-card {
+  display: grid; grid-template-columns: 66px 1fr; gap: 12px; text-align: left;
+  background: rgba(255, 252, 244, .7); border: 1px solid var(--line); border-radius: 6px;
+  padding: 12px 14px; cursor: pointer; font-family: var(--serif);
+}
+.bt-card:hover { border-color: var(--line-2); background: #fffdf6; }
+.bt-card-year { font-size: 20px; color: var(--accent); font-variant-numeric: tabular-nums; }
+.bt-card-body b { display: block; font-family: var(--kai); font-size: 16px; letter-spacing: .06em; color: var(--ink); }
+.bt-card-body i { display: block; font-style: normal; font-size: 11.5px; color: var(--ink-3); margin: 2px 0 4px; }
+.bt-card-body em { font-style: normal; font-size: 12px; color: var(--ink-2); line-height: 1.6; }
+
+/* 地图上的战役标记 */
+.bt-mark { cursor: pointer; }
+.bt-mark .bt-ring { fill: rgba(166, 59, 47, .16); stroke: rgba(166, 59, 47, .85); stroke-width: 1.2; }
+.bt-mark .bt-swords { stroke: #a63b2f; stroke-width: 1.8; stroke-linecap: round; }
+.bt-mark .bt-label {
+  font-family: var(--kai); font-size: 11px; fill: #8a2f22; letter-spacing: .08em;
+  paint-order: stroke; stroke: rgba(250, 244, 230, .9); stroke-width: 3px;
+}
+.bt-mark.on .bt-ring { fill: rgba(166, 59, 47, .3); stroke-width: 2; }
+.bt-arrow { fill: none; stroke: #b3382c; stroke-width: 2.4; stroke-linecap: round; }
+.bt-arrow.flank { stroke: #b08a3e; stroke-dasharray: 6 5; }
+.bt-arrowhead { fill: #b3382c; }
+.bt-arrow-label {
+  font-family: var(--kai); font-size: 10.5px; fill: #8a2f22; letter-spacing: .06em;
+  paint-order: stroke; stroke: rgba(250, 244, 230, .92); stroke-width: 3px;
+}
+body[data-theme="sand"] .bt-mark .bt-ring { fill: rgba(226, 96, 74, .18); stroke: #e2604a; }
+body[data-theme="sand"] .bt-mark .bt-swords { stroke: #f0a08c; }
+body[data-theme="sand"] .bt-mark .bt-label { fill: #f2b3a2; stroke: rgba(10, 8, 7, .9); }
+body[data-theme="sand"] .bt-arrow { stroke: #e2604a; }
+body[data-theme="sand"] .bt-arrow.flank { stroke: #d9b06a; }
+body[data-theme="sand"] .bt-arrowhead { fill: #e2604a; }
+body[data-theme="sand"] .bt-arrow-label { fill: #f0c9bd; stroke: rgba(10, 8, 7, .92); }
+
+/* 战役详情浮层 */
+.battle-panel {
+  position: absolute; left: 26px; bottom: 26px; z-index: 8;
+  width: min(420px, calc(100% - 52px)); max-height: 62%;
+  overflow-y: auto; padding: 16px 18px 14px;
+  background: rgba(250, 244, 232, .96); border: 1px solid var(--line-2); border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+body[data-theme="sand"] .battle-panel { background: rgba(18, 15, 12, .96); border-color: var(--line-2); }
+.bt-close {
+  position: absolute; right: 10px; top: 8px; background: none; border: none;
+  font-size: 20px; line-height: 1; color: var(--ink-3); cursor: pointer;
+}
+.bt-close:hover { color: var(--accent); }
+.bt-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 8px; }
+.bt-year { font-size: 12px; color: var(--accent); font-variant-numeric: tabular-nums; }
+.bt-head h3 { font-family: var(--kai); font-size: 20px; letter-spacing: .08em; margin: 0; }
+.bt-sides { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 8px 0; }
+.bt-side { border: 1px dashed var(--line); border-radius: 5px; padding: 7px 9px; }
+.bt-side-label { font-family: var(--kai); font-size: 13px; color: var(--ink); margin-bottom: 4px; }
+.bt-commanders { display: flex; flex-wrap: wrap; gap: 4px; }
+.bt-troops { margin-top: 5px; font-size: 12px; color: var(--accent); font-variant-numeric: tabular-nums; }
+.bt-result { font-size: 12.5px; line-height: 1.75; color: var(--ink); margin: 8px 0 4px; }
+.bt-note { font-size: 12px; line-height: 1.7; color: var(--ink-2); margin: 0 0 10px; }
+.bt-actions { display: flex; gap: 8px; }
+.bt-actions button {
+  font-family: var(--serif); font-size: 12px; padding: 4px 10px; cursor: pointer;
+  color: var(--ink-2); background: rgba(217, 201, 169, .12); border: 1px solid var(--line); border-radius: 4px;
+}
+.bt-actions button:hover { border-color: var(--line-2); color: var(--ink); }
+.bt-src { margin-top: 10px; font-size: 10.5px; color: var(--ink-3); }
+
+/* 政治博弈 */
+.politicswrap { display: block; }
+.pw-head { margin-bottom: 18px; }
+.pw-head h2 { font-family: var(--kai); font-size: 20px; letter-spacing: .1em; margin: 0 0 10px; }
+.pw-head h2 small { font-family: var(--serif); font-size: 11px; color: var(--ink-3); letter-spacing: .02em; }
+.pw-bars { display: flex; flex-direction: column; gap: 6px; max-width: 720px; }
+.pw-row { display: grid; grid-template-columns: 90px 1fr 40px; align-items: center; gap: 10px; }
+.pw-name { font-family: var(--kai); font-size: 13px; color: var(--ink-2); }
+.pw-track { height: 9px; background: rgba(180, 158, 120, .18); border-radius: 5px; overflow: hidden; }
+.pw-track i { display: block; height: 100%; border-radius: 5px; }
+.pw-num { font-size: 11px; color: var(--ink-3); text-align: right; font-variant-numeric: tabular-nums; }
+.pw-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 18px; }
+.pw-card {
+  display: flex; flex-direction: column; gap: 5px; text-align: left;
+  background: rgba(255, 252, 244, .66); border: 1px solid var(--line); border-radius: 6px;
+  padding: 13px 15px; cursor: pointer; font-family: var(--serif);
+}
+.pw-card:hover { border-color: var(--line-2); background: #fffdf6; }
+.pw-card-year { font-size: 12px; color: var(--accent); font-variant-numeric: tabular-nums; }
+.pw-card-title { font-family: var(--kai); font-size: 16px; letter-spacing: .06em; color: var(--ink); }
+.pw-card-scene { font-size: 11.5px; color: var(--ink-3); line-height: 1.65; }
+.pw-card-opts { display: flex; gap: 6px; flex-wrap: wrap; margin: 2px 0; }
+.pw-card-opts i { font-style: normal; font-size: 11px; padding: 1px 6px; border: 1px dashed var(--line-2); border-radius: 3px; color: var(--ink-2); }
+.pw-card-out { font-size: 12px; color: var(--ink-2); line-height: 1.7; }
+.pw-card-impact { font-size: 11.5px; color: var(--accent); line-height: 1.6; }
+.pw-note { margin-top: 16px; font-size: 11px; color: var(--ink-3); }
+body[data-theme="sand"] .bt-card, body[data-theme="sand"] .pw-card {
+  background: rgba(217, 201, 169, .05); border-color: var(--line);
+}
+body[data-theme="sand"] .bt-card:hover, body[data-theme="sand"] .pw-card:hover { background: rgba(217, 201, 169, .1); border-color: var(--line-2); }
+body[data-theme="sand"] .pw-track { background: rgba(217, 201, 169, .14); }
+body[data-theme="sand"] .bt-side { border-color: var(--line); }
+body[data-theme="sand"] .bt-actions button { background: rgba(217, 201, 169, .08); }
+@media (max-width: 900px) {
+  .battle-list, .pw-grid { grid-template-columns: 1fr; }
+  .battle-panel { left: 10px; right: 10px; width: auto; bottom: 10px; max-height: 48%; }
+}
+
+/* hidden 必须真正隐藏（防止作者样式 display 覆盖 hidden） */
+[hidden] { display: none !important; }
