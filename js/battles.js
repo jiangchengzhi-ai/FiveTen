@@ -18,7 +18,8 @@
         { from: [119.4, 32.5], to: [118.9, 33.2], kind: 'attack', label: '吴军自扬州北上' }
       ],
       note: '朱温南征受挫，吴与吴越、楚鼎立之势成形。',
-      src: '《资治通鉴》卷二百六十一；《新五代史·杨行密传》'
+      src: '《资治通鉴》卷二百六十一；《新五代史·杨行密传》',
+      steps: [{"name":"对峙","text":"汴军庞师古屯清口、葛从周屯寿州，欲两路取淮南；吴军杨行密、朱瑾分兵迎击。","arrows":[{"from":[117.9,33.1],"to":[119,33.35],"kind":"attack","label":"汴军南下"},{"from":[119.4,32.5],"to":[118.95,33.25],"kind":"attack","label":"吴军北上"}]},{"name":"决水","text":"朱瑾决淮水灌汴营，汴军大乱；杨行密主力自后夹击。","arrows":[{"from":[118.6,33.1],"to":[118.95,33.3],"kind":"flank","label":"吴军决水夹击"}]},{"name":"决胜","text":"庞师古战死，汴军大败；朱温南征受挫，淮南之势遂固。","arrows":[{"from":[118.95,33.25],"to":[118.2,33.05],"kind":"attack","label":"汴军溃退"}]}]
     },
     {
       id: 'boixiang', name: '柏乡之战', year: 911, month: '正月', place: [114.65, 37.52],
@@ -47,7 +48,8 @@
         { from: [115.4, 38.7], to: [116.3, 39.55], kind: 'attack', label: '晋军驰援' }
       ],
       note: '骑战与守城的经典；幽州成为晋对契丹的门户。',
-      src: '《资治通鉴》卷二百六十九；《辽史·太祖本纪》'
+      src: '《资治通鉴》卷二百六十九；《辽史·太祖本纪》',
+      steps: [{"name":"围城","text":"耶律阿保机率契丹军南下，围幽州；晋将周德威坚守待援。","arrows":[{"from":[121,43],"to":[117.3,40.2],"kind":"attack","label":"契丹南下"},{"from":[115.6,38.9],"to":[116.3,39.55],"kind":"attack","label":"晋军驰援"}]},{"name":"驰援","text":"李嗣源、李存勖率军出居庸关，与契丹前锋接战。","arrows":[{"from":[115.4,38.8],"to":[116.3,39.6],"kind":"attack","label":"晋军出关"}]},{"name":"解围","text":"晋军内外夹击，契丹军退走，幽州围解。","arrows":[{"from":[116.35,39.62],"to":[117.3,40.1],"kind":"attack","label":"夹击契丹"}]}]
     },
     {
       id: 'huliubei', name: '胡柳陂之战', year: 919, month: '十二月', place: [114.9, 35.2],
@@ -61,7 +63,8 @@
         { from: [115.2, 34.4], to: [114.9, 35.2], kind: 'attack', label: '晋军迎击' }
       ],
       note: '晋虽胜而失良将；梁军自此更倚王彦章。',
-      src: '《资治通鉴》卷二百七十；《旧五代史·周德威传》'
+      src: '《资治通鉴》卷二百七十；《旧五代史·周德威传》',
+      steps: [{"name":"西进","text":"晋军自杨刘西进，梁将贺瑰、王彦章率军迎击于胡柳陂。","arrows":[{"from":[116.4,36.1],"to":[115,35.25],"kind":"attack","label":"晋军西进"},{"from":[114.2,34.6],"to":[114.9,35.15],"kind":"attack","label":"梁军北上"}]},{"name":"逆转","text":"晋军初战失利，周德威战死；李存勖收兵再战，反败为胜。","arrows":[{"from":[115.15,34.95],"to":[114.95,35.2],"kind":"attack","label":"晋军反击"}]},{"name":"两败","text":"双方俱伤，梁军退走；晋虽胜而失良将。","arrows":[{"from":[114.95,35.2],"to":[114.4,34.8],"kind":"retreat","label":"梁军退走"}]}]
     },
     {
       id: 'shengde', name: '德胜—杨刘之战', year: 923, month: '四月—六月', place: [115.9, 36.3],
@@ -75,7 +78,8 @@
         { from: [114.0, 36.4], to: [115.9, 36.3], kind: 'attack', label: '唐军东援' }
       ],
       note: '夹河苦战：王彦章两破唐军，但梁廷掣肘，终致后方空虚。',
-      src: '《资治通鉴》卷二百七十二；《旧五代史·王彦章传》'
+      src: '《资治通鉴》卷二百七十二；《旧五代史·王彦章传》',
+      steps: [{"name":"破德胜","text":"王彦章率梁军急攻德胜，破其南城；唐军退守杨刘。","arrows":[{"from":[115.2,35.2],"to":[115.25,36.15],"kind":"attack","label":"梁军北上"}]},{"name":"守杨刘","text":"唐军坚壁杨刘，梁军久攻不下，师老兵疲。","arrows":[{"from":[115.3,36.2],"to":[115.9,36.3],"kind":"attack","label":"梁军攻杨刘"}]},{"name":"反击","text":"唐军渡河反击，梁军攻势顿挫；汴梁后方空虚，败局已定。","arrows":[{"from":[115.9,36.3],"to":[115.3,36.1],"kind":"attack","label":"唐军渡河反击"}]}]
     },
     {
       id: 'xibian', name: '唐军袭汴', year: 923, month: '十月', place: [114.35, 34.8],
@@ -103,7 +107,8 @@
         { from: [105.0, 33.4], to: [104.1, 30.7], kind: 'attack', label: '入成都' }
       ],
       note: '后唐极盛；灭蜀之功也埋下郭崇韬之死。',
-      src: '《资治通鉴》卷二百七十三；《旧五代史·郭崇韬传》'
+      src: '《资治通鉴》卷二百七十三；《旧五代史·郭崇韬传》',
+      steps: [{"name":"入蜀","text":"唐军自凤翔出斜谷，康延孝为前锋，直趋剑门。","arrows":[{"from":[107.1,34.3],"to":[105.8,32.9],"kind":"attack","label":"唐军入蜀"}]},{"name":"破剑门","text":"唐军破剑门天险，蜀军溃散；王衍仓皇东走。","arrows":[{"from":[105.7,32.6],"to":[104.5,31.2],"kind":"attack","label":"破剑门"}]},{"name":"成都降","text":"唐军入成都，王衍出降，前蜀灭亡。","arrows":[{"from":[104.5,31.2],"to":[104.07,30.66],"kind":"attack","label":"入成都"}]}]
     },
     {
       id: 'jinyang', name: '晋阳之战', year: 936, month: '七月—九月', place: [112.55, 37.87],
@@ -117,7 +122,8 @@
         { from: [111.6, 38.2], to: [112.5, 37.9], kind: 'attack', label: '唐军围太原' }
       ],
       note: '燕云割让改变此后四百年华北格局。',
-      src: '《资治通鉴》卷二百八十；《辽史·太宗本纪》'
+      src: '《资治通鉴》卷二百八十；《辽史·太宗本纪》',
+      steps: [{"name":"围城","text":"后唐张敬达率军围晋阳，石敬瑭兵少，遣使求救于契丹。","arrows":[{"from":[112.9,36.9],"to":[112.55,37.8],"kind":"attack","label":"唐军围晋阳"}]},{"name":"南下","text":"耶律德光率契丹军南下，出雁门，直趋晋阳。","arrows":[{"from":[112.9,39.6],"to":[112.6,38.1],"kind":"attack","label":"契丹南下"}]},{"name":"夹击","text":"契丹与石敬瑭内外夹击，唐军大败，张敬达被杀。","arrows":[{"from":[112.6,38],"to":[112.55,37.85],"kind":"attack","label":"夹击唐军"}]}]
     },
     {
       id: 'yangcheng', name: '阳城之战', year: 945, month: '三月', place: [115.1, 38.1],
@@ -131,7 +137,8 @@
         { from: [114.6, 37.6], to: [115.2, 38.1], kind: 'attack', label: '晋军北击' }
       ],
       note: '后晋对辽少有的野战大胜，却未能改变次年亡国。',
-      src: '《资治通鉴》卷二百八十四；《旧五代史·符彦卿传》'
+      src: '《资治通鉴》卷二百八十四；《旧五代史·符彦卿传》',
+      steps: [{"name":"南下","text":"辽太宗耶律德光率军南下，围晋军于阳城。","arrows":[{"from":[117,39.4],"to":[115.2,38.2],"kind":"attack","label":"辽军南下"}]},{"name":"逆击","text":"晋将符彦卿等逆风反击，辽军阵脚大乱。","arrows":[{"from":[114.8,37.8],"to":[115.2,38.1],"kind":"attack","label":"晋军逆击"}]},{"name":"退走","text":"辽军大败北撤；晋军虽胜，主帅杜重威已怀异志。","arrows":[{"from":[115.2,38.2],"to":[116.2,39],"kind":"retreat","label":"辽军北撤"}]}]
     },
     {
       id: 'hezhong', name: '河中之战', year: 950, month: '四月—七月', place: [110.4, 35.0],
@@ -145,7 +152,8 @@
         { from: [109.3, 36.0], to: [110.4, 35.0], kind: 'flank', label: '分兵断援' }
       ],
       note: '郭威由此掌兵权，为后周代汉埋下伏笔。',
-      src: '《资治通鉴》卷二百八十九；《旧五代史·周太祖纪》'
+      src: '《资治通鉴》卷二百八十九；《旧五代史·周太祖纪》',
+      steps: [{"name":"围城","text":"郭威率军西征，围李守贞于河中；分兵断其援路。","arrows":[{"from":[112.4,34.9],"to":[110.5,35],"kind":"attack","label":"郭威西征"},{"from":[111.8,34],"to":[110.4,34.9],"kind":"flank","label":"断援"}]},{"name":"困城","text":"郭威引水灌城、断粮道，河中城中食尽。","arrows":[{"from":[110.55,35.1],"to":[110.45,35],"kind":"flank","label":"引水灌城"}]},{"name":"城破","text":"李守贞自焚，三镇平；郭威声望大增。","arrows":[{"from":[110.5,34.9],"to":[110.42,35],"kind":"attack","label":"攻入河中"}]}]
     },
     {
       id: 'gaoping', name: '高平之战', year: 954, month: '三月', place: [112.9, 35.8],
@@ -189,7 +197,8 @@
         { from: [110.5, 30.8], to: [105.5, 30.9], kind: 'attack', label: '刘光义出归州' }
       ],
       note: '宋统一战争第一役；蜀地财赋随后成为灭南方的本钱。',
-      src: '《宋史·王全斌传》；《续资治通鉴长编》卷五'
+      src: '《宋史·王全斌传》；《续资治通鉴长编》卷五',
+      steps: [{"name":"分路","text":"宋军分两路入蜀：王全斌出凤州，刘光义出归州。","arrows":[{"from":[107.2,34.2],"to":[105.8,32.9],"kind":"attack","label":"王全斌入蜀"},{"from":[110.5,30.8],"to":[107,30.9],"kind":"attack","label":"刘光义沿江"}]},{"name":"破剑门","text":"宋军破剑门，蜀将王昭远被擒，成都震动。","arrows":[{"from":[105.7,32.6],"to":[104.5,31.2],"kind":"attack","label":"破剑门"}]},{"name":"成都降","text":"孟昶出降，后蜀亡；宋得蜀地财赋。","arrows":[{"from":[104.5,31.2],"to":[104.07,30.66],"kind":"attack","label":"入成都"}]}]
     },
     {
       id: 'jinling', name: '宋灭南唐（金陵之战）', year: 975, month: '正月—十一月', place: [118.78, 32.06],
@@ -233,9 +242,22 @@
         { from: [112.9, 36.9], to: [112.6, 37.8], kind: 'attack', label: '切断汾河粮道' }
       ],
       note: '979 年，最后一个割据政权归入宋朝。',
-      src: '《宋史·太宗本纪》；《续资治通鉴长编》卷二十'
+      src: '《宋史·太宗本纪》；《续资治通鉴长编》卷二十',
+      steps: [{"name":"合围","text":"宋太宗亲征，潘美率军合围太原，四面攻城。","arrows":[{"from":[114.5,36.9],"to":[112.7,37.8],"kind":"attack","label":"宋军合围"}]},{"name":"断援","text":"宋军先破辽援于白马岭，又断汾河粮道，城中粮尽。","arrows":[{"from":[112.9,37],"to":[112.6,37.8],"kind":"flank","label":"断粮道"}]},{"name":"出降","text":"北汉主刘继元出降，五代十国时代结束。","arrows":[{"from":[112.6,37.9],"to":[112.55,37.87],"kind":"attack","label":"受降"}]}]
     }
   ];
+
+
+  const COUNTER = {
+    907: '若继续挟唐以令藩镇：唐室名分尚存，朱温须以“辅政”姿态压服诸镇，短期或可缓称帝之敌意；但河东、淮南必以“勤王”为名结盟，中原陷入长期拉锯，统一时间大概率推迟。',
+    923: '若继续以晋王号讨梁：名分不足，诸镇观望，灭梁后难以迅速接收中原；但也可能避免后唐“复唐”旗号带来的财政与宗室包袱。',
+    936: '若死守太原待变：后唐内部本已离心，或可等到唐廷自乱；但契丹已决意南下，太原孤城难持久，一旦城破，石氏灭族，燕云或仍难免被契丹夺取。',
+    947: '若固守待援：晋军主力已降，援军无从谈起，汴梁城破只是时间问题；抵抗或可保全名节，但中原必遭更惨烈的兵燹。',
+    951: '若拥立刘氏：可暂缓“篡位”之名，但隐帝已杀郭威全家，郭威与后汉已无和解可能；拥立宗室只会重演权臣与幼主的循环。',
+    954: '若固守汴梁：北汉辽军深入，周军新丧主帅、士气未稳，守城风险极大；一旦汴梁有失，后周可能提前崩解。',
+    960: '若还军护周：赵匡胤或可做“周公”，但五代兵变逻辑未变，禁军骄横，迟早再有一次黄袍；宋朝的建立只是被推迟，而非被取消。',
+    978: '若据境自守：吴越地狭兵弱，宋已平南唐、南汉，三面受敌；抵抗只会换来兵燹与屠城，纳土是唯一能保全宗族与百姓的选择。'
+  };
 
   const POLITICS = [
     { year: 907, title: '朱温代唐：禅让还是维持唐室', scene: '唐廷已空，藩镇或附或叛；朱温据中原、挟天子。',
@@ -427,7 +449,6 @@
     if (!body) return;
     const y = (window.atlasGetYear && window.atlasGetYear()) || 875;
     const ATLAS = window.ATLAS || {};
-    // 势力指数：以疆域段面积近似（示意）
     const areas = {};
     (ATLAS.territories || []).forEach(t => {
       if (!(t.from <= y && y < t.to)) return;
@@ -451,27 +472,45 @@
         <span class="pw-track"><i style="width:${Math.max(4, areas[r.id] / maxA * 100).toFixed(0)}%;background:${r.color}"></i></span>
         <span class="pw-num">${(areas[r.id] / maxA * 100).toFixed(0)}</span>
       </div>`).join('');
-    const cards = POLITICS.slice().sort((a, b) => a.year - b.year).map(p => `
-      <button class="pw-card" data-year="${p.year}">
+    const cards = POLITICS.slice().sort((a, b) => a.year - b.year).map((p, idx) => `
+      <div class="pw-card" data-idx="${idx}">
         <span class="pw-card-year">${p.year}</span>
         <span class="pw-card-title">${esc(p.title)}</span>
         <span class="pw-card-scene">${esc(p.scene)}</span>
-        <span class="pw-card-opts">${p.options.map(o => `<i>${esc(o)}</i>`).join('')}</span>
-        <span class="pw-card-out">→ ${esc(p.outcome)}</span>
-        <span class="pw-card-impact">${esc(p.impact)}</span>
-      </button>`).join('');
+        <div class="pw-choices">
+          <button class="pw-opt hist" data-k="h">✓ ${esc(p.options[0])}<i>实际</i></button>
+          <button class="pw-opt alt" data-k="a">？${esc(p.options[1])}<i>推演</i></button>
+        </div>
+        <div class="pw-result" hidden></div>
+      </div>`).join('');
     body.innerHTML = `
       <div class="pw-head">
         <h2>势力格局 <small>${y} 年 · 按疆域面积示意</small></h2>
         <div class="pw-bars">${bars}</div>
       </div>
       <div class="pw-grid">${cards}</div>
-      <p class="pw-note">势力指数由疆域多边形面积近似，仅表示相对大小；“博弈”条目为关键抉择复盘，年份可点击跳转。</p>`;
-    body.querySelectorAll('[data-year]').forEach(el => {
-      el.addEventListener('click', () => {
-        const yy = +el.getAttribute('data-year');
-        if (window.atlasSetYear) window.atlasSetYear(yy);
-        if (window.PeopleView) window.PeopleView.setView('map');
+      <p class="pw-note">势力指数由疆域多边形面积近似；“实际”为史实结果，“推演”为反事实假设，仅作思考练习。</p>`;
+    body.querySelectorAll('.pw-card').forEach(card => {
+      const p = POLITICS[+card.getAttribute('data-idx')];
+      card.querySelectorAll('.pw-opt').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const k = btn.getAttribute('data-k');
+          const box = card.querySelector('.pw-result');
+          card.querySelectorAll('.pw-opt').forEach(x => x.classList.toggle('on', x === btn));
+          box.hidden = false;
+          if (k === 'h') {
+            box.innerHTML = `<b class="pw-tag hist">实际发生</b>${esc(p.outcome)}<br><em>${esc(p.impact)}</em>
+              <button class="pw-jump" data-year="${p.year}">跳到 ${p.year} 年看地图 →</button>`;
+          } else {
+            box.innerHTML = `<b class="pw-tag alt">反事实推演</b>${esc(COUNTER[p.year] || '史料不足，无法可靠推演。')}
+              <em>推演仅为逻辑假设，不代表历史必然。</em>`;
+          }
+          const jb = box.querySelector('.pw-jump');
+          if (jb) jb.addEventListener('click', () => {
+            if (window.atlasSetYear) window.atlasSetYear(+jb.getAttribute('data-year'));
+            if (window.PeopleView) window.PeopleView.setView('map');
+          });
+        });
       });
     });
   }
