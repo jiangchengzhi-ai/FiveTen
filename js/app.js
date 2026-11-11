@@ -26,6 +26,21 @@
     return e;
   }
 
+  // Chaikin 角切平滑：让示意性多边形/海岸线的折角变圆润（只影响显示，不改数据）
+  function chaikin(pts, iters) {
+    let arr = pts.map(q => [q[0], q[1]]);
+    for (let k = 0; k < (iters || 2); k++) {
+      const out = [];
+      for (let i = 0; i < arr.length; i++) {
+        const a = arr[i], b = arr[(i + 1) % arr.length];
+        out.push([a[0] * 0.75 + b[0] * 0.25, a[1] * 0.75 + b[1] * 0.25]);
+        out.push([a[0] * 0.25 + b[0] * 0.75, a[1] * 0.25 + b[1] * 0.75]);
+      }
+      arr = out;
+    }
+    return arr;
+  }
+
   const $ = (sel) => document.querySelector(sel);
   const regimeById = {};
   ATLAS.regimes.forEach(r => { regimeById[r.id] = r; });
@@ -41,6 +56,7 @@
 
   /* ---------------- 静态底图 ---------------- */
   let gStatic, gTerrRaster, gLakeTop, gTerrGain, gTerrHover, gTerritory, gLabels, gPlaces, gEventDots, gZoom;
+  let terrHit = null;
 
   function buildMap() {
     const host = $('#map');
@@ -67,7 +83,7 @@
     // 海
     svgEl('rect', { x: 0, y: 0, width: W, height: H, class: 'sea' }, gStatic);
     // 陆块
-    svgEl('path', { d: pathOf(GEO.coastline, true), class: 'land' }, gStatic);
+    svgEl('path', { d: pathOf(chaikin(GEO.coastline, 1), true), class: 'land' }, gStatic);
     // 被简化海岸包住的海湾
     GEO.seas.forEach(s => svgEl('path', { d: pathOf(s.pts, true), class: 'sea-inner' }, gStatic));
     // 岛屿
@@ -126,6 +142,7 @@
 
     buildPlaces();
     bindPanZoom(svg);
+    bindMapHit(svg);
     return svg;
   }
 
@@ -133,15 +150,31 @@
   function buildPlaces() {
     gPlaces.innerHTML = '';
     placeEls = [];
-    ATLAS.cities.forEach(c => {
+    // 先画所有点位，再按重要性放标签，做简易避让（避免江南一带文字叠在一起）
+    const boxes = [];
+    const ordered = ATLAS.cities.slice().sort((a, b) => {
+      const ra = a.rank || (a.type === 'capital' ? 1 : 2);
+      const rb = b.rank || (b.type === 'capital' ? 1 : 2);
+      return ra - rb;
+    });
+    ordered.forEach(c => {
       const [x, y] = proj(c.lon, c.lat);
-      const g = svgEl('g', { class: 'place ' + c.type, transform: `translate(${x.toFixed(1)},${y.toFixed(1)})` }, gPlaces);
+      const rank = c.rank || (c.type === 'capital' ? 1 : 2);
+      const g = svgEl('g', { class: 'place ' + c.type + ' rank' + rank, transform: `translate(${x.toFixed(1)},${y.toFixed(1)})` }, gPlaces);
       svgEl('circle', { r: c.type === 'capital' ? 5.2 : 2.6 }, g);
       if (c.type === 'capital') svgEl('circle', { r: 9.5, class: 'halo' }, g);
-      const label = svgEl('text', { x: 8, y: 4, class: 'place-label' }, g);
-      label.textContent = c.name;
-      const t = svgEl('title', {}, g);
-      t.textContent = c.name + (c.alt ? '（' + c.alt + '）' : '') + '　' + c.note;
+      const fs2 = rank === 1 ? 13.5 : rank === 2 ? 12 : 10.8;
+      const w = c.name.length * fs2 * 1.02 + 6, h = fs2 + 3;
+      const lx = 8, ly = -h / 2;
+      const box = { x: x + lx, y: y + ly, w: w, h: h };
+      const hit = boxes.some(b => box.x < b.x + b.w && box.x + box.w > b.x && box.y < b.y + b.h && box.y + box.h > b.y);
+      if (rank === 1 || !hit) {
+        const label = svgEl('text', { x: lx, y: 4, class: 'place-label' }, g);
+        label.textContent = c.name;
+        boxes.push(box);
+      }
+      const title = svgEl('title', {}, g);
+      title.textContent = c.name + (c.alt ? '（' + c.alt + '）' : '') + '　' + c.note;
       placeEls.push(g);
     });
   }
@@ -193,8 +226,9 @@
     const land = new Uint8Array(N);
     for (let i = 0; i < N; i++) land[i] = md[i * 4 + 3] > 96 ? 1 : 0;
 
+    const smoothed = list.map(t2 => ({ regime: t2.regime, z: t2.z, polys: t2.polys.map(poly => chaikin(poly, 2)) }));
     // 政权编号与调色（按 z 从下到上）
-    const ordered = list.slice().sort((x, y) => (x.z || 0) - (y.z || 0));
+    const ordered = smoothed.slice().sort((x, y) => (x.z || 0) - (y.z || 0));
     const idx = new Map(), seq = [];
     ordered.forEach(t2 => { if (!idx.has(t2.regime)) { idx.set(t2.regime, seq.length + 1); seq.push(t2.regime); } });
     const pal = seq.map(id => {
@@ -282,6 +316,8 @@
       });
     }
 
+    terrHit = { ids: ids, seq: seq, cw: cw, ch: ch };
+
     // 4) 直接合成最终像素：填色 + 边界
     const gainedSet = new Set((gained || []).map(gid => idx.get(gid)));
     const out = ctx.createImageData(cw, ch), od = out.data;
@@ -297,12 +333,14 @@
         let r = 0, g = 0, b = 0, a = 0;
         if (coast) { r = 66; g = 48; b = 28; a = 225; }
         else if (v !== right || v !== down) {
-          if (gainedSet.has(v)) { r = 166; g = 59; b = 47; a = 230; }
+          const selId = state.selected ? idx.get(state.selected) : 0;
+          if (selId && v === selId) { r = 166; g = 59; b = 47; a = 240; }
+          else if (gainedSet.has(v)) { r = 166; g = 59; b = 47; a = 230; }
           else { r = 62; g = 46; b = 28; a = 205; }
         } else if (v) {
           const c = pal[v - 1];
           r = c[0]; g = c[1]; b = c[2];
-          a = dimAll && seq[v - 1] !== dimAll ? 34 : 122;
+          a = dimAll && seq[v - 1] !== dimAll ? 28 : 172;
         }
         if (a) { od[o] = r; od[o + 1] = g; od[o + 2] = b; od[o + 3] = a; }
       }
@@ -341,31 +379,6 @@
     paintTerritoryRaster(list, lastChg.gained);
     gTerrHover.innerHTML = '';
     gTerrGain.innerHTML = '';
-    groups.forEach(g => {
-      const r = g.regime;
-      const p = svgEl('path', {
-        d: g.ds.join(' '),
-        class: 'terr-hit',
-        'data-regime': r.id,
-        'fill-rule': 'nonzero',
-        fill: 'transparent',
-        stroke: 'none',
-        'pointer-events': 'fill'
-      }, gTerritory);
-      const title = svgEl('title', {}, p);
-      title.textContent = r.name + '　' + year + ' 年';
-      p.addEventListener('pointerenter', (ev) => {
-        showTip(ev, r, year);
-        gTerrHover.innerHTML = '';
-        const hp = svgEl('path', { d: g.ds.join(' '), 'fill-rule': 'nonzero' }, gTerrHover);
-        hp.style.fill = r.color; hp.style.opacity = '.24';
-        hp.style.stroke = 'rgba(60,45,25,.55)'; hp.style.strokeWidth = '1.4';
-        hp.style.pointerEvents = 'none';
-      });
-      p.addEventListener('pointermove', moveTip);
-      p.addEventListener('pointerleave', () => { hideTip(); gTerrHover.innerHTML = ''; });
-      p.addEventListener('click', (ev) => { ev.stopPropagation(); selectRegime(r.id); });
-    });
 
     // 政权名标注：取该政权所有顶点的平均位置
     groups.forEach(g => {
@@ -373,8 +386,9 @@
       let sx = 0, sy = 0;
       all.forEach(pt => { sx += pt[0]; sy += pt[1]; });
       const [x, y] = proj(sx / all.length, sy / all.length);
+      const ly = y - 6;
       const dim = state.selected && state.selected !== g.regime.id;
-      const txt = svgEl('text', { x, y, class: 'regime-label' + (dim ? ' dim' : '') }, gLabels);
+      const txt = svgEl('text', { x, y: ly, class: 'regime-label' + (dim ? ' dim' : '') }, gLabels);
       txt.textContent = g.regime.name;
       txt.style.fill = g.regime.color;
     });
@@ -447,6 +461,12 @@
     box.querySelectorAll('[data-p]').forEach(b => {
       b.addEventListener('click', () => {
         if (window.PeopleView) window.PeopleView.focus(b.getAttribute('data-p'));
+      });
+    });
+    box.querySelectorAll('p').forEach(pp => {
+      pp.addEventListener('click', (ev) => {
+        if (ev.target.closest && ev.target.closest('[data-p]')) return;
+        pp.classList.toggle('open');
       });
     });
 
@@ -667,6 +687,34 @@
   }
 
   /* ---------------- 缩放拖拽 ---------------- */
+  /* 像素命中：直接查栅格分区，保证 hover/点击与看到的填色完全一致 */
+  function regimeAtPoint(svg, clientX, clientY) {
+    if (!terrHit) return null;
+    const ctm = svg.getScreenCTM();
+    if (!ctm) return null;
+    const pt = svg.createSVGPoint(); pt.x = clientX; pt.y = clientY;
+    const p = pt.matrixTransform(ctm.inverse());
+    const px = Math.round(p.x * RSCALE), py = Math.round(p.y * RSCALE);
+    if (px < 0 || py < 0 || px >= terrHit.cw || py >= terrHit.ch) return null;
+    const id = terrHit.ids[py * terrHit.cw + px];
+    return id ? (regimeById[terrHit.seq[id - 1]] || null) : null;
+  }
+
+  function bindMapHit(svg) {
+    svg.addEventListener('pointermove', (e) => {
+      const r = regimeAtPoint(svg, e.clientX, e.clientY);
+      if (r) { showTip(e, r, state.year); svg.style.cursor = 'pointer'; }
+      else { hideTip(); svg.style.cursor = ''; }
+    });
+    svg.addEventListener('pointerleave', () => { hideTip(); svg.style.cursor = ''; });
+    svg.addEventListener('click', (e) => {
+      if (svg._justDragged) { svg._justDragged = false; return; }
+      const r = regimeAtPoint(svg, e.clientX, e.clientY);
+      if (r) selectRegime(r.id);
+      else if (state.selected) { state.selected = null; renderAll(); }
+    });
+  }
+
   function bindPanZoom(svg) {
     let scale = 1, tx = 0, ty = 0, dragging = false, sx = 0, sy = 0, moved = false;
     const apply = () => {
@@ -701,7 +749,7 @@
       sx = e.clientX; sy = e.clientY;
       apply();
     });
-    svg.addEventListener('pointerup', () => { dragging = false; });
+    svg.addEventListener('pointerup', () => { dragging = false; svg._justDragged = moved; });
     svg.addEventListener('pointercancel', () => { dragging = false; });
     $('#reset-view').addEventListener('click', () => {
       scale = 1; tx = 0; ty = 0; apply();
@@ -759,14 +807,12 @@
       if (e.key === ' ') { e.preventDefault(); play(); }
       if (e.key === 'Escape' && state.selected) { state.selected = null; renderAll(); }
     });
-    $('#stage').addEventListener('click', (e) => {
-      if (e.target.classList && e.target.classList.contains('terr')) return;
-      if (state.selected) { state.selected = null; renderAll(); }
-    });
+
   }
 
   /* ---------------- 启动 ---------------- */
   function boot() {
+    const wantHit = /hittest/.test(location.hash);
     buildMap();
     buildTimeline();
     bindControls();
@@ -794,6 +840,20 @@
     const m = /year=(\d{3,4})/.exec(location.hash);
     if (m) setYear(+m[1]);
 
+    if (wantHit) {
+      setTimeout(() => {
+        const svg = $('#stage');
+        const pts = [[114.35, 34.80], [104.07, 30.66], [113.26, 23.13], [120.16, 30.27], [112.24, 30.33], [116.40, 39.90]];
+        const names = pts.map(([lon, lat]) => {
+          const [x, y] = proj(lon, lat);
+          const p = svg.createSVGPoint(); p.x = x; p.y = y;
+          const c = p.matrixTransform(svg.getScreenCTM());
+          const r = regimeAtPoint(svg, c.x, c.y);
+          return r ? r.name : '—';
+        });
+        document.title = 'HIT ' + names.join(' | ');
+      }, 80);
+    }
     const foot = $('#foot-sources');
     if (foot) foot.textContent = '史料骨架：《旧五代史》《新五代史》《资治通鉴》《十国春秋》《辽史》《宋史》；疆域分期参考谭其骧《中国历史地图集》五代十国卷。多边形为示意性简化边界，非精确测绘。';
   }
