@@ -19,6 +19,12 @@
 - 事件条目为年表式事实陈述，已标注出处；如权利人认为不当，请联系删除或替换。
 - 人物评价、性格标签与关系起止年为项目自拟，不代表原书观点。
 
+## 第三方组件与数据
+
+- **Three.js r147**（MIT）：`vendor/three/three.min.js`、`vendor/three/OrbitControls.js`，用于真 3D 沙盘渲染。
+- **地形高程**：AWS Open Data「Terrain Tiles」（Terrarium 编码），底层为 SRTM / GMTED2010 / ETOPO1，**公有领域**（NASA / USGS / NOAA）。数据文件：`data/terrain.png`、`data/terrain.json`；获取脚本：`scripts/fetch-terrain.js`。
+- 说明：高程为**现代地形**，与五代十国时期存在河道、海岸线、湖泊差异，页面仅作“沙盘起伏示意”，不作历史地理结论。
+
 ## 免责
 
 - 疆域边界为示意，不得用于测绘、边界认定等用途。

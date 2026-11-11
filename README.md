@@ -36,7 +36,7 @@
 - **大事年表来自书稿**：626 条大事按麦老师《五代十国全史》附录年表重建（875–979 全覆盖，逐年有月份），旧的正史条目备份在 `research/旧大事-165.json`。
 - **事件↔人物、政权↔人物互链**：侧栏每条大事下方自动列出文中提到的人物标签；点开政权详情会列出该政权收录的全部人物，点击即进人物生平。
 - **中原王朝分期带**：底部时间轴上方一条色带，按梁→唐→晋→汉→周→宋分色，标出 923/936/947/951/960 五个改朝换代点，点色带即跳到该朝元年。
-- **真 3D 沙盘（M0）**：Three.js（r147，MIT，已 vendor）+ 真实高程 `data/terrain.png`（AWS Terrain Tiles，公有领域）；地图变成可旋转/缩放/平移的 3D 地形，疆域为贴图，州府/政权名用 CSS 投影标签。平面 / 2.5D / 真 3D 三档可切。
+- **真 3D 沙盘（M1）**：Three.js r147（MIT，已 vendor）+ 真实高程（AWS Terrain Tiles，公有领域）；支持**轨道相机**（拖拽旋转/滚轮缩放/右键平移）、**3D 拾取**（hover 高亮 + 点击选中政权）、**政权块体**（薄挤出层）、**史迹层**（河流/湖泊/都城立柱）、**3D 战役标记与箭头**、**相机预设**（俯视/沙盘/低角 + 双击复位）。Three.js（r147，MIT，已 vendor）+ 真实高程 `data/terrain.png`（AWS Terrain Tiles，公有领域）；地图变成可旋转/缩放/平移的 3D 地形，疆域为贴图，州府/政权名用 CSS 投影标签。平面 / 2.5D / 真 3D 三档可切。
 - **立体沙盘视角**：地图默认以 2.5D 倾角呈现（CSS 3D：透视 + 倾斜 + 底板 + 厚度阴影），右下「立体 / 平面」可切换；平面模式保留原比例便于查图。
 - **交互修正**：hover/点击改为按**像素分区**命中，和看到的填色完全对齐；选中政权描朱边、其余压暗。
 - **地名**：州府 37 → 70，主要州府常显、小地名随缩放隐藏，并做标签避让。
@@ -72,6 +72,14 @@ js/stats-view.js      数据视图：完整性自检与分布统计
 js/book-chapters.js   书稿章节 → 年份映射（自动生成）
 js/book.js            章节导航面板
 js/battles.js         战役复盘与政治博弈视图
+js/terrain3d.js       3D 核心（场景/高程/贴图/标签/拾取 API）
+js/terrain3d-pick.js  3D 拾取与 hover
+js/terrain3d-battle.js 3D 战役标记/箭头
+js/terrain3d-blocks.js 3D 政权块体
+js/terrain3d-historical.js 3D 史迹层
+js/terrain3d-camera.js 3D 相机预设
+vendor/three/         Three.js r147（MIT）
+data/terrain.png      真实高程（公有领域）
 js/help.js            帮助/关于面板与键盘快捷键
 js/export.js          导出 PNG（SVG 序列化 + canvas 栅格化）
 js/search.js          全局搜索：人物 / 政权 / 大事 / 州府

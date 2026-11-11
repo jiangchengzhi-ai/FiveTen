@@ -525,9 +525,12 @@
   }
 
   window.atlasSetMode = setMode;
+  window.atlasSelectRegime = selectRegime;
   window.AtlasMap = {
     getRasterCanvas() { return gTerrRaster && gTerrRaster._canvas; },
-    setBattle(id, step) { state.battle = id; state.battleStep = step || 0; renderBattles(); },
+    getRasterHit() { return terrHit ? { ids: terrHit.ids, seq: terrHit.seq, cw: terrHit.cw, ch: terrHit.ch } : null; },
+    getBattle() { return { id: state.battle, step: state.battleStep || 0 }; },
+    setBattle(id, step) { state.battle = id; state.battleStep = step || 0; renderBattles(); document.dispatchEvent(new CustomEvent('atlas:battle', { detail: { id, step: state.battleStep } })); },
     replayBattle() { replayBattleArrows(); },
     getYear() { return state.year; }
   };
@@ -962,7 +965,7 @@
     let savedMode = window.innerWidth > 900 ? '3d' : '2d';
     const mm = /[#&]mode=(2d|25d|3d)/.exec(location.hash);
     if (mm) savedMode = mm[1];
-    try { savedMode = localStorage.getItem('atlas-mode') || savedMode; } catch (e) { }
+    try { if (!mm) { const st = localStorage.getItem('atlas-mode'); if (st) savedMode = st; } } catch (e) { }
     if (savedMode === '3d' && !(window.Terrain3D && window.Terrain3D.enter())) savedMode = '25d';
     document.body.dataset.mode = savedMode;
     const mb0 = $('#mode-3d');

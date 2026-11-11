@@ -1732,3 +1732,22 @@ body[data-mode="3d"] .gl-labels { z-index: 3; }
 body[data-mode="3d"] .map-hint { display: none; }
 .gl-regime { font-size: 16px; }
 .gl-city { opacity: 1; }
+
+
+/* ===== 3D 交互层（Lead 统一维护，子模块只加 class） ===== */
+.gl-hover-tip {
+  position: absolute; z-index: 9; pointer-events: none; padding: 2px 8px;
+  font-family: var(--kai); font-size: 12px; letter-spacing: .08em; color: #f0dfc0;
+  background: rgba(12, 10, 8, .86); border: 1px solid rgba(226, 96, 74, .5); border-radius: 4px;
+  transform: translate(-50%, -140%); white-space: nowrap; display: none;
+}
+.gl-presets {
+  position: absolute; right: 16px; bottom: 16px; z-index: 7; display: flex; gap: 6px;
+}
+.gl-presets button {
+  font-family: var(--serif); font-size: 11.5px; padding: 3px 9px; cursor: pointer;
+  color: #cbb897; background: rgba(12, 10, 8, .78); border: 1px solid rgba(217, 201, 169, .22); border-radius: 4px;
+}
+.gl-presets button:hover { border-color: rgba(217, 201, 169, .5); color: #f0dfc0; }
+body[data-mode="3d"] #gl-stage canvas { cursor: grab; }
+body[data-mode="3d"] #gl-stage canvas:active { cursor: grabbing; }
