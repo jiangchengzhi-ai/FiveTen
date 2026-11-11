@@ -874,6 +874,8 @@
     });
     svg.addEventListener('pointerup', () => { dragging = false; svg._justDragged = moved; });
     svg.addEventListener('pointercancel', () => { dragging = false; });
+    const mb = $('#mode-3d');
+    if (mb) mb.addEventListener('click', () => setMode((document.body.dataset.mode || '2d') === '3d' ? '2d' : '3d'));
     const tb = $('#theme-btn');
     if (tb) { tb.textContent = isSand() ? '☀' : '◐'; tb.title = isSand() ? '切换到史册（浅色）' : '切换到沙盘（深色）'; }
     if (tb) tb.addEventListener('click', () => {
@@ -911,6 +913,14 @@
     if (b) { b.classList.remove('on'); b.textContent = '▶ 播放'; }
   }
 
+  /* ---------------- 立体视角 ---------------- */
+  function setMode(mode) {
+    document.body.dataset.mode = mode;
+    try { localStorage.setItem('atlas-mode', mode); } catch (e) { }
+    const btn = $('#mode-3d');
+    if (btn) { btn.textContent = mode === '3d' ? '平面' : '立体'; btn.title = mode === '3d' ? '切回平面视角' : '切换立体视角'; }
+  }
+
   function bindControls() {
 
     document.querySelectorAll('[data-year]').forEach(b => {
@@ -938,6 +948,11 @@
 
   /* ---------------- 启动 ---------------- */
   function boot() {
+    let savedMode = window.innerWidth > 900 ? '3d' : '2d';
+    try { savedMode = localStorage.getItem('atlas-mode') || savedMode; } catch (e) { }
+    document.body.dataset.mode = savedMode;
+    const mb0 = $('#mode-3d');
+    if (mb0 && savedMode === '3d') { mb0.textContent = '平面'; }
     let savedTheme = 'sand';
     try { savedTheme = localStorage.getItem(THEME_KEY) || 'sand'; } catch (e) { }
     document.body.dataset.theme = savedTheme;
