@@ -1395,3 +1395,59 @@ body[data-theme="sand"] .tick.has-event { box-shadow: 0 0 6px rgba(192, 68, 51, 
 body[data-theme="sand"] .legend-item { font-size: 11px; }
 body[data-theme="sand"] .map-legend { max-width: 62%; }
 body[data-theme="sand"] .detail h3 { text-shadow: 0 0 18px rgba(192, 68, 51, .18); }
+
+/* ================= 纪年轴 + HUD（新布局，取代播放/滑杆） ================= */
+.map-hud {
+  position: absolute; left: 34px; top: 16px; z-index: 6; pointer-events: none;
+}
+.hud-year {
+  font-family: var(--serif); font-size: 62px; line-height: .92; letter-spacing: .02em;
+  color: var(--ink); text-shadow: 0 2px 20px rgba(0, 0, 0, .35);
+}
+.hud-meta {
+  display: flex; gap: 12px; margin-top: 6px;
+  font-size: 12px; letter-spacing: .14em; color: var(--ink-2);
+}
+.chrono-bar {
+  display: grid; grid-template-columns: 168px minmax(0, 1fr); align-items: center;
+  gap: 18px; padding: 6px 22px 10px; border-top: 1px solid var(--line);
+  background: linear-gradient(0deg, rgba(246, 238, 222, .96), rgba(242, 232, 213, .82));
+}
+.cb-left { display: flex; flex-direction: column; gap: 1px; }
+.cb-left b { font-family: var(--serif); font-size: 25px; line-height: 1.1; color: var(--accent); }
+.cb-left span { font-size: 11.5px; color: var(--ink-3); letter-spacing: .06em; }
+.cb-track { position: relative; height: 48px; cursor: ew-resize; touch-action: none; }
+.cb-band { position: absolute; left: 0; right: 0; top: 0; height: 7px; }
+.cb-seg { position: absolute; top: 0; height: 7px; border-radius: 1px; opacity: .78; }
+.cb-bars { position: absolute; left: 0; right: 0; bottom: 15px; height: 26px; }
+.cb-bars i {
+  position: absolute; bottom: 0; width: 3px; transform: translateX(-1.5px);
+  background: linear-gradient(180deg, rgba(192, 68, 51, .9), rgba(192, 68, 51, .28));
+  border-radius: 1px 1px 0 0;
+}
+.cb-ticks { position: absolute; left: 0; right: 0; bottom: 0; height: 12px; }
+.cb-ticks span {
+  position: absolute; transform: translateX(-1px);
+  font-size: 9.5px; color: var(--ink-3); font-variant-numeric: tabular-nums;
+}
+.cb-cursor { position: absolute; top: -1px; bottom: 0; width: 1px; background: var(--accent); box-shadow: 0 0 10px rgba(192, 68, 51, .55); }
+.cb-cursor::after {
+  content: ""; position: absolute; top: -3px; left: -3px; width: 7px; height: 7px;
+  background: var(--accent); transform: rotate(45deg);
+}
+body[data-theme="sand"] .chrono-bar {
+  background: linear-gradient(0deg, rgba(10, 9, 8, .98), rgba(16, 13, 11, .92));
+}
+body[data-theme="sand"] .hud-year { color: #f0dfc0; text-shadow: 0 0 28px rgba(0, 0, 0, .8); }
+body[data-theme="sand"] .cb-left b { color: #d9694f; }
+body[data-theme="sand"] .cb-cursor { background: #e2604a; }
+body[data-theme="sand"] .cb-cursor::after { background: #e2604a; }
+/* 地图视图里不再重复侧栏年份（已有 HUD） */
+body[data-view="map"] .year-block { display: none; }
+@media (max-width: 900px) {
+  .map-hud { left: 16px; top: 10px; }
+  .hud-year { font-size: 40px; }
+  .chrono-bar { grid-template-columns: 1fr; gap: 6px; padding: 6px 12px 10px; position: sticky; bottom: 0; z-index: 40; }
+  .cb-left { flex-direction: row; align-items: baseline; gap: 8px; }
+  .cb-left b { font-size: 19px; }
+}
