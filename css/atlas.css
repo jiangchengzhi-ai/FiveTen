@@ -1571,3 +1571,33 @@ body[data-theme="sand"] .bt-actions button { background: rgba(217, 201, 169, .08
 
 /* hidden 必须真正隐藏（防止作者样式 display 覆盖 hidden） */
 [hidden] { display: none !important; }
+
+
+/* 战役分步推演 */
+.bt-troopbars { margin: 6px 0 10px; display: flex; flex-direction: column; gap: 4px; }
+.bt-bar-row { display: grid; grid-template-columns: 74px 1fr 74px; gap: 8px; align-items: center; }
+.bt-bar-name { font-size: 11.5px; color: var(--ink-2); }
+.bt-bar-track { height: 7px; background: rgba(180, 158, 120, .2); border-radius: 4px; overflow: hidden; }
+.bt-bar-track i { display: block; height: 100%; border-radius: 4px; }
+.bt-bar-num { font-size: 11px; color: var(--accent); text-align: right; font-variant-numeric: tabular-nums; }
+.bt-step-box { margin: 10px 0 6px; border-top: 1px dashed var(--line); border-bottom: 1px dashed var(--line); padding: 8px 0; }
+.bt-step-head { display: flex; align-items: baseline; gap: 8px; }
+.bt-step-idx { font-size: 11px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.bt-step-head b { font-family: var(--kai); font-size: 15px; color: var(--accent); letter-spacing: .08em; }
+.bt-step-text { font-size: 12.5px; line-height: 1.8; color: var(--ink); margin: 6px 0; min-height: 44px; }
+.bt-pips { display: flex; gap: 5px; margin: 4px 0 8px; }
+.bt-pips i { width: 18px; height: 3px; background: rgba(180, 158, 120, .3); border-radius: 2px; }
+.bt-pips i.done { background: var(--line-2); }
+.bt-pips i.on { background: var(--accent); }
+.bt-step-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+.bt-step-actions button {
+  font-family: var(--serif); font-size: 11.5px; padding: 3px 9px; cursor: pointer;
+  color: var(--ink-2); background: rgba(217, 201, 169, .1); border: 1px solid var(--line); border-radius: 4px;
+}
+.bt-step-actions button:hover:not(:disabled) { border-color: var(--line-2); color: var(--ink); }
+.bt-step-actions button:disabled { opacity: .35; cursor: default; }
+.bt-arrow.past { stroke-opacity: .26; }
+.bt-arrow-label.past { opacity: .3; }
+body[data-theme="sand"] .bt-step-actions button { background: rgba(217, 201, 169, .08); }
+body[data-theme="sand"] .bt-pips i { background: rgba(217, 201, 169, .22); }
+body[data-theme="sand"] .bt-bar-track { background: rgba(217, 201, 169, .16); }
