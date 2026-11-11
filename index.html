@@ -48,6 +48,7 @@
 
   <main>
     <section class="mapwrap" aria-label="地图区">
+      <div class="map-board" aria-hidden="true"></div>
       <div id="map"></div>
       <div class="map-hud">
         <div class="hud-year" id="hud-year">950</div>
@@ -56,6 +57,7 @@
       <div class="map-hint">拖拽地图 · 滚轮缩放 · 点击政权</div>
       <div class="map-legend" id="legend" aria-label="本年政权图例"></div>
       <div class="map-controls">
+        <button id="mode-3d" type="button" title="切换立体 / 平面视角">立体</button>
         <button id="export-png" type="button" title="把当前地图存为 PNG">存图</button>
         <button id="reset-view" type="button">复位视图</button>
       </div>
@@ -174,7 +176,7 @@
 
     <h3>操作</h3>
     <ul>
-      <li>拖动/点击底部纪年轴翻年；<b>← →</b>逐年，<b>空格</b>下一年，<b>1–4</b>切视图，<b>?</b>开本面板，<b>Esc</b>关闭。</li>
+      <li>拖动/点击底部纪年轴翻年；<b>← →</b>逐年，<b>空格</b>下一年，<b>1–4</b>切视图；地图右下「立体 / 平面」切换沙盘视角，<b>?</b>开本面板，<b>Esc</b>关闭。</li>
       <li>顶栏搜索可搜「人物 / 政权 / 大事 / 州府」，命中后自动切视图、跳年份、选中对象。</li>
       <li>地址栏会同步成 <code>#view=people&amp;year=950</code>，复制即分享同一画面。</li>
     </ul>
