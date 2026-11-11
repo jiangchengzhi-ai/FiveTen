@@ -32,7 +32,8 @@
         { from: [112.4, 37.9], to: [114.5, 37.55], kind: 'attack', label: '晋军东出' }
       ],
       note: '五代前期最关键的转折之一：晋由守转攻。',
-      src: '《资治通鉴》卷二百六十七；《旧五代史·周德威传》'
+      src: '《资治通鉴》卷二百六十七；《旧五代史·周德威传》',
+      steps: [{"name":"开战","text":"梁将王景仁率军自邢州北上，屯于柏乡；晋军自晋阳东出，屯高邑，与梁军隔野相望。","arrows":[{"from":[114.5,37.05],"to":[114.65,37.5],"kind":"attack","label":"梁军北上"},{"from":[112.65,37.8],"to":[114.5,37.6],"kind":"attack","label":"晋军东出"}]},{"name":"诱敌","text":"周德威率轻骑挑战，梁军坚壁不出；晋军佯退，梁军以为晋军怯战。","arrows":[{"from":[114.55,37.62],"to":[114.7,37.5],"kind":"flank","label":"晋轻骑挑战"}]},{"name":"列阵","text":"梁军尽出营列阵，兵力虽众而阵形未整；晋军以逸待劳，择其弱点。","arrows":[{"from":[114.68,37.45],"to":[114.55,37.6],"kind":"attack","label":"梁军出战"}]},{"name":"决胜","text":"晋军骑兵两翼冲击，梁军大溃，河北形势自此逆转。","arrows":[{"from":[114.4,37.55],"to":[114.7,37.5],"kind":"attack","label":"晋左翼冲击"},{"from":[114.5,37.75],"to":[114.7,37.52],"kind":"attack","label":"晋右翼冲击"}]}]
     },
     {
       id: 'youzhou', name: '幽州之战', year: 917, month: '三月—八月', place: [116.3, 39.6],
@@ -87,7 +88,8 @@
         { from: [115.5, 36.2], to: [114.4, 34.9], kind: 'attack', label: '李嗣源轻骑南下' }
       ],
       note: '七天破国：正面相持、侧翼直取都城的经典。',
-      src: '《资治通鉴》卷二百七十二；《旧五代史·唐庄宗纪》'
+      src: '《资治通鉴》卷二百七十二；《旧五代史·唐庄宗纪》',
+      steps: [{"name":"相持","text":"唐梁夹河相持，梁军主力尽在前线，汴梁空虚。","arrows":[{"from":[115.9,36.3],"to":[115.95,36.25],"kind":"flank","label":"夹河对峙"}]},{"name":"轻骑","text":"李嗣源率前锋轻骑自郓州西进，绕过梁军主力，直趋汴梁。","arrows":[{"from":[116,35.7],"to":[114.4,34.9],"kind":"attack","label":"李嗣源轻骑南下"}]},{"name":"城降","text":"汴梁无备，末帝朱友贞自杀，后梁灭亡；唐军七日破国。","arrows":[{"from":[114.5,34.95],"to":[114.35,34.82],"kind":"attack","label":"唐军入汴"}]}]
     },
     {
       id: 'qianshu', name: '灭前蜀之战', year: 925, month: '九月—十一月', place: [104.8, 32.0],
@@ -157,7 +159,8 @@
         { from: [113.2, 34.8], to: [112.9, 35.8], kind: 'attack', label: '周军北上迎击' }
       ],
       note: '高平之战确立柴荣威望，开启后周改革与统一战争。',
-      src: '《资治通鉴》卷二百九十一；《旧五代史·周世宗纪》'
+      src: '《资治通鉴》卷二百九十一；《旧五代史·周世宗纪》',
+      steps: [{"name":"南下","text":"北汉主刘崇联合辽军自太原南下，直趋高平；后周世宗柴荣决意亲征。","arrows":[{"from":[112.6,37.6],"to":[112.9,35.95],"kind":"attack","label":"北汉辽军南下"},{"from":[114.3,35],"to":[113.2,35.7],"kind":"attack","label":"周军北上"}]},{"name":"初战","text":"两军列阵，周右军先溃，阵脚动摇，诸将失色。","arrows":[{"from":[113.1,35.9],"to":[112.95,35.85],"kind":"attack","label":"北汉冲周右军"}]},{"name":"亲征","text":"柴荣亲冒矢石督战，赵匡胤、张永德各率精骑冲阵，周军士气复振。","arrows":[{"from":[113.15,35.72],"to":[112.9,35.85],"kind":"attack","label":"赵匡胤冲阵"},{"from":[112.8,35.9],"to":[112.95,35.82],"kind":"flank","label":"张永德夹击"}]},{"name":"决胜","text":"北汉军大败，刘崇仅以身免；周军乘胜进围太原。","arrows":[{"from":[112.95,35.85],"to":[112.7,36.2],"kind":"attack","label":"周军追击"}]}]
     },
     {
       id: 'zijinshan', name: '紫金山之战', year: 956, month: '三月', place: [117.2, 32.6],
@@ -171,7 +174,8 @@
         { from: [116.8, 32.9], to: [117.2, 32.6], kind: 'attack', label: '周军邀击' }
       ],
       note: '淮南三征的转折：南唐失去野战能力。',
-      src: '《资治通鉴》卷二百九十三；《旧五代史·周世宗纪》'
+      src: '《资治通鉴》卷二百九十三；《旧五代史·周世宗纪》',
+      steps: [{"name":"来援","text":"南唐李景达率援军自金陵渡江，列营紫金山，欲解寿州之围。","arrows":[{"from":[118.6,32.15],"to":[117.35,32.55],"kind":"attack","label":"唐军渡江来援"}]},{"name":"断粮","text":"周军分兵断唐军粮道，据险夹击，唐军首尾不能相顾。","arrows":[{"from":[116.7,32.9],"to":[117.3,32.65],"kind":"flank","label":"周军断粮道"}]},{"name":"溃败","text":"唐军大溃，斩首数万，寿州孤悬，南唐被迫割地求和。","arrows":[{"from":[117.25,32.6],"to":[117.9,32.35],"kind":"attack","label":"唐军溃退"}]}]
     },
     {
       id: 'shu965', name: '宋灭后蜀', year: 965, month: '正月—二月', place: [105.0, 32.0],
@@ -199,7 +203,8 @@
         { from: [116.0, 29.6], to: [117.6, 31.0], kind: 'flank', label: '皖口援军被截' }
       ],
       note: '“卧榻之侧，岂容他人鼾睡”；南唐文治至此终结。',
-      src: '《宋史·曹彬传》《宋史·李煜传》；《续资治通鉴长编》卷十六'
+      src: '《宋史·曹彬传》《宋史·李煜传》；《续资治通鉴长编》卷十六',
+      steps: [{"name":"渡江","text":"宋军自采石架浮桥渡江，连破唐军水寨，进围金陵。","arrows":[{"from":[118.4,31.6],"to":[118.75,32],"kind":"attack","label":"宋军渡江"}]},{"name":"围城","text":"曹彬、潘美分营围城，久围不攻，唐军困守。","arrows":[{"from":[118.95,32.2],"to":[118.8,32.1],"kind":"flank","label":"宋军合围"}]},{"name":"援绝","text":"朱令赟率江西唐军来援，于皖口被宋军截击，全军覆没。","arrows":[{"from":[117.25,30.55],"to":[117.6,31],"kind":"attack","label":"唐援军北上"},{"from":[117,31.1],"to":[117.55,31],"kind":"flank","label":"宋军截击"}]},{"name":"城破","text":"金陵城破，李煜出降，南唐灭亡。","arrows":[{"from":[118.85,32.15],"to":[118.78,32.06],"kind":"attack","label":"宋军入城"}]}]
     },
     {
       id: 'baima', name: '白马岭之战', year: 979, month: '三月', place: [113.6, 38.2],
@@ -213,7 +218,8 @@
         { from: [113.2, 37.7], to: [113.6, 38.2], kind: 'attack', label: '宋军据险邀击' }
       ],
       note: '五代十国落幕之战的前奏。',
-      src: '《宋史·郭进传》；《辽史·耶律沙传》'
+      src: '《宋史·郭进传》；《辽史·耶律沙传》',
+      steps: [{"name":"南下","text":"辽将耶律沙率军南下，欲援北汉，渡白马岭一线。","arrows":[{"from":[113.9,39.4],"to":[113.65,38.35],"kind":"attack","label":"辽军南下"}]},{"name":"半渡","text":"宋将郭进据险邀击，乘辽军半渡而击之，辽军大乱。","arrows":[{"from":[113.35,37.95],"to":[113.65,38.2],"kind":"attack","label":"宋军邀击"}]},{"name":"溃退","text":"辽军败退，北汉援绝，宋军遂克太原。","arrows":[{"from":[113.6,38.25],"to":[113.9,38.7],"kind":"retreat","label":"辽军北退"}]}]
     },
     {
       id: 'taiyuan', name: '太原之战', year: 979, month: '正月—五月', place: [112.55, 37.87],
@@ -271,13 +277,68 @@
 
   function battleById(id) { return BATTLES.find(b => b.id === id); }
 
-  function openBattle(id) {
-    const b = battleById(id);
-    if (!b) return;
-    current = id;
+  let stepIdx = 0, stepTimer = null;
+
+  function stepsOf(battle) {
+    return (battle.steps && battle.steps.length) ? battle.steps
+      : [{ name: '战况', text: battle.result, arrows: battle.arrows || [] }];
+  }
+
+  function parseTroops(s) {
+    const wan = /(\d+(?:\.\d+)?)\s*万/.exec(s);
+    if (wan) return parseFloat(wan[1]) * 10000;
+    const qian = /(\d+)\s*千/.exec(s);
+    if (qian) return parseInt(qian[1], 10) * 1000;
+    return null;
+  }
+
+  function renderTroopBars(battle) {
+    const nums = battle.sides.map(s => parseTroops(s.troops));
+    const max = Math.max.apply(null, nums.filter(n => n)) || 1;
+    return battle.sides.map((s, i) => {
+      const n = nums[i];
+      const w = n ? Math.max(6, n / max * 100) : 8;
+      const col = ((window.ATLAS && window.ATLAS.regimes) || []).find(r => r.id === s.regime);
+      const color = col ? col.color : '#a8823c';
+      return `<div class="bt-bar-row">
+        <span class="bt-bar-name">${esc(s.label)}</span>
+        <span class="bt-bar-track"><i style="width:${w.toFixed(0)}%;background:${color}"></i></span>
+        <span class="bt-bar-num">${esc(s.troops)}</span>
+      </div>`;
+    }).join('');
+  }
+
+  function stopAuto() { if (stepTimer) { clearInterval(stepTimer); stepTimer = null; } const btn = document.querySelector('.bt-auto'); if (btn) btn.textContent = '▶ 自动推演'; }
+
+  function renderStep(battle, idx) {
+    stepIdx = idx;
+    const steps = stepsOf(battle);
+    const step = steps[Math.min(idx, steps.length - 1)];
     const panel = document.getElementById('battle-panel');
     if (!panel) return;
-    const sideHtml = b.sides.map(s => `
+    const head = panel.querySelector('.bt-step-head');
+    if (head) head.innerHTML = `<span class="bt-step-idx">第 ${idx + 1} / ${steps.length} 步</span><b>${esc(step.name)}</b>`;
+    const txt = panel.querySelector('.bt-step-text');
+    if (txt) txt.textContent = step.text;
+    const pips = panel.querySelector('.bt-pips');
+    if (pips) pips.innerHTML = steps.map((s, i) => `<i class="${i === idx ? 'on' : i < idx ? 'done' : ''}" title="${esc(s.name)}"></i>`).join('');
+    panel.querySelectorAll('.bt-step-btn').forEach(btn => {
+      const d = +btn.getAttribute('data-step');
+      btn.disabled = (idx + d < 0 || idx + d > steps.length - 1);
+    });
+    if (window.AtlasMap) window.AtlasMap.setBattle(battle.id, idx);
+  }
+
+  function openBattle(id, startStep) {
+    const battle = battleById(id);
+    if (!battle) return;
+    current = id;
+    stopAuto();
+    const panel = document.getElementById('battle-panel');
+    if (!panel) return;
+    const steps = stepsOf(battle);
+    const idx0 = Math.max(0, Math.min(steps.length - 1, startStep || 0));
+    const sideHtml = battle.sides.map(s => `
       <div class="bt-side">
         <div class="bt-side-label">${esc(s.label)}</div>
         <div class="bt-commanders">${s.commanders.map(c => `<button class="ev-person" data-cmd="${esc(c)}">${esc(c)}</button>`).join('')}</div>
@@ -285,30 +346,48 @@
       </div>`).join('');
     panel.innerHTML = `
       <button class="bt-close" aria-label="关闭">×</button>
-      <div class="bt-head"><span class="bt-year">${b.year}${b.month ? ' · ' + b.month : ''}</span><h3>${esc(b.name)}</h3></div>
+      <div class="bt-head"><span class="bt-year">${battle.year}${battle.month ? ' · ' + battle.month : ''}</span><h3>${esc(battle.name)}</h3></div>
+      <div class="bt-troopbars">${renderTroopBars(battle)}</div>
       <div class="bt-sides">${sideHtml}</div>
-      <p class="bt-result">${esc(b.result)}</p>
-      <p class="bt-note">${esc(b.note)}</p>
-      <div class="bt-actions">
-        <button class="bt-replay">↻ 重演路线</button>
-        <button class="bt-jump">跳到该年地图</button>
+      <div class="bt-step-box">
+        <div class="bt-step-head"></div>
+        <p class="bt-step-text"></p>
+        <div class="bt-pips"></div>
+        <div class="bt-step-actions">
+          <button class="bt-step-btn" data-step="-1">← 上一步</button>
+          <button class="bt-step-btn" data-step="1">下一步 →</button>
+          <button class="bt-auto">▶ 自动推演</button>
+          <button class="bt-replay">↻ 重演本步</button>
+        </div>
       </div>
-      <p class="bt-src">史料：${esc(b.src)}　兵力为约数，仅作复盘示意</p>`;
+      <p class="bt-result">${esc(battle.result)}</p>
+      <p class="bt-note">${esc(battle.note)}</p>
+      <p class="bt-src">史料：${esc(battle.src)}　兵力为约数，路线为示意</p>`;
     panel.hidden = false;
     panel.querySelector('.bt-close').addEventListener('click', closeBattle);
+    panel.querySelectorAll('.bt-step-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const d = +btn.getAttribute('data-step');
+        renderStep(battle, Math.max(0, Math.min(steps.length - 1, stepIdx + d)));
+      });
+    });
     panel.querySelector('.bt-replay').addEventListener('click', () => { if (window.AtlasMap) window.AtlasMap.replayBattle(); });
-    panel.querySelector('.bt-jump').addEventListener('click', () => {
-      if (window.atlasSetYear) window.atlasSetYear(b.year);
-      if (window.PeopleView) window.PeopleView.setView('map');
+    panel.querySelector('.bt-auto').addEventListener('click', (e) => {
+      if (stepTimer) { stopAuto(); return; }
+      e.target.textContent = '❚❚ 停止';
+      stepTimer = setInterval(() => {
+        if (stepIdx >= steps.length - 1) { stopAuto(); return; }
+        renderStep(battle, stepIdx + 1);
+      }, 2600);
     });
     panel.querySelectorAll('[data-cmd]').forEach(el => {
       el.addEventListener('click', () => {
         const name = el.getAttribute('data-cmd');
-        const p = (window.PEOPLE || []).find(x => x.n === name);
-        if (p && window.PeopleView) window.PeopleView.focus(p.id);
+        const pp = (window.PEOPLE || []).find(x => x.n === name);
+        if (pp && window.PeopleView) window.PeopleView.focus(pp.id);
       });
     });
-    if (window.AtlasMap) window.AtlasMap.setBattle(id);
+    renderStep(battle, idx0);
   }
 
   function closeBattle() {
@@ -411,7 +490,8 @@
       if (v === 'politics') renderPolitics();
     });
     const hash = /[#&]battle=([\w-]+)/.exec(location.hash);
-    if (hash) setTimeout(() => openBattle(hash[1]), 300);
+    const hs = /[#&]step=(\d+)/.exec(location.hash);
+    if (hash) setTimeout(() => openBattle(hash[1], hs ? +hs[1] : 0), 300);
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
