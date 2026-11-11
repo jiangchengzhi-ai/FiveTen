@@ -1633,11 +1633,11 @@ body[data-theme="sand"] .pw-result { border-color: var(--line); }
 
 /* ================= 立体沙盘视角（2.5D） ================= */
 .map-board { display: none; }
-body[data-mode="3d"] .mapwrap {
+body[data-mode="25d"] .mapwrap {
   perspective: 1600px;
   perspective-origin: 50% 42%;
 }
-body[data-mode="3d"] .map-board {
+body[data-mode="25d"] .map-board {
   display: block;
   position: absolute; left: 7%; right: 7%; top: 10%; bottom: 8%;
   transform-origin: 50% 58%;
@@ -1650,12 +1650,12 @@ body[data-mode="3d"] .map-board {
   border-radius: 6px;
   box-shadow: 0 60px 90px rgba(0, 0, 0, .65), inset 0 0 60px rgba(0, 0, 0, .55);
 }
-body[data-mode="3d"] #map {
+body[data-mode="25d"] #map {
   transform: rotateX(54deg) scale(1.02);
   transform-origin: 50% 60%;
   filter: drop-shadow(0 0 40px rgba(0, 0, 0, .35));
 }
-body[data-mode="3d"] #stage {
+body[data-mode="25d"] #stage {
   filter:
     drop-shadow(0 1px 0 rgba(10, 8, 7, .95))
     drop-shadow(0 2px 0 rgba(10, 8, 7, .9))
@@ -1665,8 +1665,8 @@ body[data-mode="3d"] #stage {
     drop-shadow(0 8px 0 rgba(10, 8, 7, .55))
     drop-shadow(0 14px 26px rgba(0, 0, 0, .5));
 }
-body[data-mode="3d"] #terr-raster image { filter: saturate(1.38) brightness(1.07) contrast(1.02) drop-shadow(0 1px 0 rgba(8,7,6,.9)); }
-body[data-theme="paper"][data-mode="3d"] #stage {
+body[data-mode="25d"] #terr-raster image { filter: saturate(1.38) brightness(1.07) contrast(1.02) drop-shadow(0 1px 0 rgba(8,7,6,.9)); }
+body[data-theme="paper"][data-mode="25d"] #stage {
   filter:
     drop-shadow(0 1px 0 rgba(120, 95, 55, .55))
     drop-shadow(0 2px 0 rgba(120, 95, 55, .5))
@@ -1675,11 +1675,11 @@ body[data-theme="paper"][data-mode="3d"] #stage {
     drop-shadow(0 16px 30px rgba(60, 45, 25, .35));
 }
 @media (max-width: 900px) {
-  body[data-mode="3d"] #map { transform: rotateX(46deg) scale(1.02); }
+  body[data-mode="25d"] #map { transform: rotateX(46deg) scale(1.02); }
 }
 
 /* 3D 模式加强：沙盘底板、地图厚度 */
-body[data-mode="3d"] .map-board {
+body[data-mode="25d"] .map-board {
   left: 5%; right: 5%; top: 12%; bottom: 6%;
   transform: rotateX(56deg) translateZ(-110px) scale(1.18);
   background:
@@ -1689,11 +1689,11 @@ body[data-mode="3d"] .map-board {
   border: 1px solid rgba(192, 68, 51, .22);
   box-shadow: 0 90px 120px rgba(0, 0, 0, .7), inset 0 0 90px rgba(0, 0, 0, .7);
 }
-body[data-mode="3d"] #map {
+body[data-mode="25d"] #map {
   box-shadow: 0 30px 70px rgba(0, 0, 0, .6), 0 0 0 1px rgba(217, 201, 169, .14);
   border-radius: 3px;
 }
-body[data-mode="3d"] #terr-raster image {
+body[data-mode="25d"] #terr-raster image {
   filter:
     saturate(1.4) brightness(1.08) contrast(1.02)
     drop-shadow(0 2px 0 rgba(6, 5, 4, .95))
@@ -1702,4 +1702,33 @@ body[data-mode="3d"] #terr-raster image {
     drop-shadow(0 8px 0 rgba(6, 5, 4, .7))
     drop-shadow(0 10px 0 rgba(6, 5, 4, .55));
 }
-body[data-mode="3d"] .bt-mark, body[data-mode="3d"] .bt-arrow { filter: drop-shadow(0 4px 3px rgba(0,0,0,.55)); }
+body[data-mode="25d"] .bt-mark, body[data-mode="25d"] .bt-arrow { filter: drop-shadow(0 4px 3px rgba(0,0,0,.55)); }
+
+
+/* ================= 真 3D 沙盘（Three.js） ================= */
+.gl-stage { position: absolute; inset: 0; z-index: 2; background: #090807; overflow: hidden; }
+.gl-stage canvas { display: block; width: 100%; height: 100%; }
+.gl-labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.gl-label {
+  position: absolute; left: 0; top: 0; white-space: nowrap; will-change: transform;
+  font-family: var(--kai); letter-spacing: .08em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .95), 0 0 10px rgba(0, 0, 0, .85);
+}
+.gl-regime { font-size: 15px; font-weight: 600; color: #f0dfc0; }
+.gl-city { font-size: 10px; color: #d9c9a9; opacity: .92; }
+.gl-city.capital { font-size: 11.5px; color: #f0b6a4; }
+body[data-mode="3d"] #map,
+body[data-mode="3d"] .map-board { display: none; }
+body[data-mode="3d"] .mapwrap { padding: 0; }
+body[data-mode="3d"] .map-hint { z-index: 6; }
+body[data-mode="3d"] .gl-stage::after {
+  content: "真 3D · 拖拽旋转 · 滚轮缩放 · 右键平移";
+  position: absolute; right: 16px; top: 12px; z-index: 5;
+  font-size: 11px; letter-spacing: .12em; color: rgba(217, 201, 169, .55);
+  pointer-events: none;
+}
+body[data-mode="3d"] .gl-labels { z-index: 3; }
+
+body[data-mode="3d"] .map-hint { display: none; }
+.gl-regime { font-size: 16px; }
+.gl-city { opacity: 1; }

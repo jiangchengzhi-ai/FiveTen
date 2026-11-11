@@ -356,6 +356,7 @@
     if (!battle) return;
     current = id;
     stopAuto();
+    if (window.atlasSetMode && document.body.dataset.mode === '3d') window.atlasSetMode('2d');
     const panel = document.getElementById('battle-panel');
     if (!panel) return;
     const steps = stepsOf(battle);

@@ -524,7 +524,9 @@
     });
   }
 
+  window.atlasSetMode = setMode;
   window.AtlasMap = {
+    getRasterCanvas() { return gTerrRaster && gTerrRaster._canvas; },
     setBattle(id, step) { state.battle = id; state.battleStep = step || 0; renderBattles(); },
     replayBattle() { replayBattleArrows(); },
     getYear() { return state.year; }
@@ -915,10 +917,19 @@
 
   /* ---------------- 立体视角 ---------------- */
   function setMode(mode) {
+    if (mode === '3d' && window.Terrain3D) {
+      if (!window.Terrain3D.enter()) mode = '25d';
+    } else if (window.Terrain3D) {
+      window.Terrain3D.exit();
+    }
     document.body.dataset.mode = mode;
     try { localStorage.setItem('atlas-mode', mode); } catch (e) { }
     const btn = $('#mode-3d');
-    if (btn) { btn.textContent = mode === '3d' ? '平面' : '立体'; btn.title = mode === '3d' ? '切回平面视角' : '切换立体视角'; }
+    if (btn) {
+      const label = mode === '2d' ? '立体' : mode === '25d' ? '真3D' : '平面';
+      btn.textContent = label;
+      btn.title = mode === '3d' ? '切回平面' : mode === '25d' ? '进入真 3D 沙盘（可旋转）' : '切换立体视角';
+    }
   }
 
   function bindControls() {
@@ -949,10 +960,13 @@
   /* ---------------- 启动 ---------------- */
   function boot() {
     let savedMode = window.innerWidth > 900 ? '3d' : '2d';
+    const mm = /[#&]mode=(2d|25d|3d)/.exec(location.hash);
+    if (mm) savedMode = mm[1];
     try { savedMode = localStorage.getItem('atlas-mode') || savedMode; } catch (e) { }
+    if (savedMode === '3d' && !(window.Terrain3D && window.Terrain3D.enter())) savedMode = '25d';
     document.body.dataset.mode = savedMode;
     const mb0 = $('#mode-3d');
-    if (mb0 && savedMode === '3d') { mb0.textContent = '平面'; }
+    if (mb0) { mb0.textContent = savedMode === '3d' ? '平面' : savedMode === '25d' ? '真3D' : '立体'; }
     let savedTheme = 'sand';
     try { savedTheme = localStorage.getItem(THEME_KEY) || 'sand'; } catch (e) { }
     document.body.dataset.theme = savedTheme;

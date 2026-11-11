@@ -49,6 +49,7 @@
   <main>
     <section class="mapwrap" aria-label="地图区">
       <div class="map-board" aria-hidden="true"></div>
+      <div id="gl-stage" class="gl-stage" hidden></div>
       <div id="map"></div>
       <div class="map-hud">
         <div class="hud-year" id="hud-year">950</div>
@@ -176,7 +177,7 @@
 
     <h3>操作</h3>
     <ul>
-      <li>拖动/点击底部纪年轴翻年；<b>← →</b>逐年，<b>空格</b>下一年，<b>1–4</b>切视图；地图右下「立体 / 平面」切换沙盘视角，<b>?</b>开本面板，<b>Esc</b>关闭。</li>
+      <li>拖动/点击底部纪年轴翻年；<b>← →</b>逐年，<b>空格</b>下一年，<b>1–4</b>切视图；地图右下按钮可在「平面 / 立体 / 真3D」之间切换；真3D 下拖拽旋转、滚轮缩放、右键平移，<b>?</b>开本面板，<b>Esc</b>关闭。</li>
       <li>顶栏搜索可搜「人物 / 政权 / 大事 / 州府」，命中后自动切视图、跳年份、选中对象。</li>
       <li>地址栏会同步成 <code>#view=people&amp;year=950</code>，复制即分享同一画面。</li>
     </ul>
@@ -200,6 +201,10 @@
 <script src="js/battles.js"></script>
 <script src="js/book-chapters.js"></script>
 <script src="js/book.js"></script>
+<script src="vendor/three/three.min.js"></script>
+<script src="vendor/three/OrbitControls.js"></script>
+<script src="js/terrain-data.js"></script>
+<script src="js/terrain3d.js"></script>
 <script src="js/export.js"></script>
 <script src="js/app.js"></script>
 </body>
