@@ -59,12 +59,13 @@
     playing: false,
     timer: null,
     selected: null,
+    battle: null,
     layers: { places: true, rivers: true, marks: true, neighbors: true }
   };
   const lastChg = { gained: [], lost: [] };
 
   /* ---------------- 静态底图 ---------------- */
-  let gStatic, gTerrRaster, gLakeTop, gTerrGain, gTerrHover, gTerritory, gLabels, gPlaces, gEventDots, gZoom;
+  let gStatic, gTerrRaster, gLakeTop, gTerrGain, gTerrHover, gTerritory, gBattle, gLabels, gPlaces, gEventDots, gZoom;
   let terrHit = null;
 
   function buildMap() {
@@ -165,6 +166,7 @@
     gLabels = svgEl('g', { id: 'regime-labels' }, gZoom);
     gPlaces = svgEl('g', { id: 'places' }, gZoom);
     gEventDots = svgEl('g', { id: 'event-dots' }, gZoom);
+    gBattle = svgEl('g', { id: 'battle-layer' }, gZoom);
 
     svg.appendChild(svgEl('rect', { x: 0, y: 0, width: W, height: H, class: 'frame', filter: 'url(#paper)' }));
 
@@ -446,6 +448,83 @@
   }
   function hideTip() { tip().hidden = true; }
 
+  /* ---------------- 战役图层 ---------------- */
+  function renderBattles() {
+    if (!gBattle) return;
+    gBattle.innerHTML = '';
+    const list = (window.BATTLES || []).filter(b => b.year === state.year);
+    list.forEach(b => {
+      const [x, y] = proj(b.place[0], b.place[1]);
+      const g = svgEl('g', { class: 'bt-mark' + (state.battle === b.id ? ' on' : ''), transform: `translate(${x.toFixed(1)},${y.toFixed(1)})` }, gBattle);
+      svgEl('circle', { r: 9, class: 'bt-ring' }, g);
+      svgEl('path', { d: 'M-4 -4 L4 4 M4 -4 L-4 4', class: 'bt-swords' }, g);
+      const t = svgEl('text', { x: 14, y: 4, class: 'bt-label' }, g);
+      t.textContent = b.name;
+      g.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        if (window.BattleView) window.BattleView.open(b.id);
+      });
+    });
+    if (state.battle) {
+      const b = (window.BATTLES || []).find(x => x.id === state.battle);
+      if (b && b.year === state.year) drawBattleArrows(b);
+    }
+  }
+
+  function drawBattleArrows(b) {
+    const defs = document.querySelector('#stage defs');
+    if (defs && !document.getElementById('battle-arrowhead')) {
+      const mk = document.createElementNS(NS, 'marker');
+      mk.setAttribute('id', 'battle-arrowhead');
+      mk.setAttribute('viewBox', '0 0 10 10');
+      mk.setAttribute('refX', '8'); mk.setAttribute('refY', '5');
+      mk.setAttribute('markerWidth', '6'); mk.setAttribute('markerHeight', '6');
+      mk.setAttribute('orient', 'auto-start-reverse');
+      const pp = document.createElementNS(NS, 'path');
+      pp.setAttribute('d', 'M0,0 L10,5 L0,10 z');
+      pp.setAttribute('class', 'bt-arrowhead');
+      mk.appendChild(pp); defs.appendChild(mk);
+    }
+    (b.arrows || []).forEach((arr, i) => {
+      const [x1, y1] = proj(arr.from[0], arr.from[1]);
+      const [x2, y2] = proj(arr.to[0], arr.to[1]);
+      const mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
+      const dx = x2 - x1, dy = y2 - y1;
+      const len = Math.hypot(dx, dy) || 1;
+      const cx = mx - dy / len * 26, cy = my + dx / len * 26;
+      const path = svgEl('path', {
+        d: `M${x1.toFixed(1)} ${y1.toFixed(1)} Q${cx.toFixed(1)} ${cy.toFixed(1)} ${x2.toFixed(1)} ${y2.toFixed(1)}`,
+        class: 'bt-arrow ' + (arr.kind || 'attack'),
+        'marker-end': 'url(#battle-arrowhead)'
+      }, gBattle);
+      const L = path.getTotalLength ? path.getTotalLength() : 200;
+      path.style.strokeDasharray = L;
+      path.style.strokeDashoffset = L;
+      const label = svgEl('text', { x: cx.toFixed(1), y: cy.toFixed(1), class: 'bt-arrow-label' }, gBattle);
+      label.textContent = arr.label || '';
+    });
+    replayBattleArrows();
+  }
+
+  function replayBattleArrows() {
+    gBattle.querySelectorAll('.bt-arrow').forEach((p, i) => {
+      const L = p.style.strokeDasharray;
+      p.style.transition = 'none';
+      p.style.strokeDashoffset = L;
+      void p.getBoundingClientRect();
+      setTimeout(() => {
+        p.style.transition = 'stroke-dashoffset 1.1s ease-out';
+        p.style.strokeDashoffset = 0;
+      }, 120 + i * 420);
+    });
+  }
+
+  window.AtlasMap = {
+    setBattle(id) { state.battle = id; renderBattles(); },
+    replayBattle() { replayBattleArrows(); },
+    getYear() { return state.year; }
+  };
+
   /* ---------------- 侧栏 ---------------- */
   const GAN = '甲乙丙丁戊己庚辛壬癸';
   const ZHI = '子丑寅卯辰巳午未申酉戌亥';
@@ -692,6 +771,7 @@
     renderTerritories(state.year);
     renderSidebar();
     renderEventDots();
+    renderBattles();
     renderPlacesVisibility();
     renderLegend();
   }
@@ -904,6 +984,8 @@
     if (foot) foot.textContent = '史料骨架：《旧五代史》《新五代史》《资治通鉴》《十国春秋》《辽史》《宋史》；疆域分期参考谭其骧《中国历史地图集》五代十国卷。多边形为示意性简化边界，非精确测绘。';
   }
 
+  window.ATLAS = ATLAS;
+  window.PEOPLE = PEOPLE;
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
   else boot();
 })();
