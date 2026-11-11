@@ -362,6 +362,10 @@
     const pw = $('#people-wrap'); if (pw) pw.hidden = v !== 'people';
     const cw = $('#chrono-wrap'); if (cw) cw.hidden = v !== 'chrono';
     const sw = $('#stats-wrap'); if (sw) sw.hidden = v !== 'stats';
+    const bw2 = $('#battle-wrap'); if (bw2) bw2.hidden = v !== 'battle';
+    const pw2 = $('#politics-wrap'); if (pw2) pw2.hidden = v !== 'politics';
+    if (v === 'battle' && window.BattleView) window.BattleView.renderList();
+    if (v === 'politics' && window.PoliticsView) window.PoliticsView.render();
     if (window.ChronoView) window.ChronoView.setActive(v === 'chrono');
     if (window.StatsView) window.StatsView.setActive(v === 'stats');
     if (active) render();
@@ -383,7 +387,7 @@
       if (active) render();
     });
     year = (window.atlasGetYear && window.atlasGetYear()) || 907;
-    const m = /view=(map|people|chrono|stats)/.exec(location.hash);
+    const m = /view=(map|people|chrono|stats|battle|politics)/.exec(location.hash);
     setView(m ? m[1] : (document.body.dataset.view || 'map'));
   }
 
