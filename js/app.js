@@ -469,6 +469,10 @@
     $('#year-ganzhi').textContent = ganzhi(y) + '年';
     const era = eraAt(y);
     $('#era-line').textContent = era ? era.text : '（年号未详）';
+    const hudY = $('#hud-year'); if (hudY) hudY.textContent = y;
+    const hudE = $('#hud-era'); if (hudE) hudE.textContent = era ? era.text : '（年号未详）';
+    const hudG = $('#hud-ganzhi'); if (hudG) hudG.textContent = ganzhi(y) + '年';
+    const cbL = $('#cb-label'); if (cbL) cbL.textContent = era ? era.text : '（年号未详）';
 
     const evs = eventsAt(y);
     const box = $('#events');
@@ -590,83 +594,86 @@
     renderAll();
   }
 
-  /* ---------------- 时间轴 ---------------- */
+  /* ---------------- 纪年轴（无播放/无滑杆） ---------------- */
   function buildTimeline() {
-    const ticks = $('#ticks');
-    ticks.innerHTML = '';
-    for (let y = S.start; y <= S.end; y++) {
-      const isDec = y % 10 === 0 || y === S.start;
-      const hasEvent = ATLAS.events.some(e => e.year === y);
-      const d = document.createElement('div');
-      d.className = 'tick' + (isDec ? ' decade' : '') + (hasEvent ? ' has-event' : '');
-      d.style.left = ((y - S.start) / TOTAL) * 100 + '%';
-      if (isDec) {
-        const lb = document.createElement('span');
-        lb.className = 'tick-label';
-        lb.textContent = y;
-        d.appendChild(lb);
-      }
-      d.addEventListener('click', () => setYear(y));
-      ticks.appendChild(d);
-    }
-    const evTrack = $('#event-track');
-    evTrack.innerHTML = '';
-    // 按年聚合：一年一个点，点大小随条目数变化，避免 400+ 条时挤成一团
+    const track = $('#cb-track');
+    if (!track) return;
+    track.innerHTML = '';
+    // 中原王朝分期带
+    const band = document.createElement('div');
+    band.className = 'cb-band';
+    const dynasties = [
+      ['tang', '唐'], ['houliang', '梁'], ['houtang', '唐'], ['houjin', '晋'],
+      ['houhan', '汉'], ['houzhou', '周'], ['song', '宋']
+    ];
+    dynasties.forEach(([id, short]) => {
+      const r = regimeById[id];
+      if (!r) return;
+      ATLAS.territories.filter(t => t.regime === id).forEach(t => {
+        const a2 = Math.max(t.from, S.start), b2 = Math.min(t.to, S.end + 1);
+        if (b2 <= a2) return;
+        const seg = document.createElement('i');
+        seg.className = 'cb-seg';
+        seg.style.left = ((a2 - S.start) / TOTAL) * 100 + '%';
+        seg.style.width = ((b2 - a2) / TOTAL) * 100 + '%';
+        seg.style.background = r.color;
+        seg.title = r.name + '　' + a2 + '–' + (b2 - 1);
+        band.appendChild(seg);
+      });
+    });
+    track.appendChild(band);
+    // 事件密度柱
     const perYear = {};
     ATLAS.events.forEach(e => { perYear[e.year] = (perYear[e.year] || 0) + 1; });
-    Object.keys(perYear).map(Number).sort((a, b) => a - b).forEach(y => {
-      const n = perYear[y];
-      const b = document.createElement('button');
-      b.className = 'evdot';
-      b.style.left = ((y - S.start) / TOTAL) * 100 + '%';
-      b.style.transform = 'rotate(45deg) scale(' + (0.72 + Math.min(n, 10) * 0.09).toFixed(2) + ')';
-      b.title = y + ' 年：' + n + ' 条大事';
-      b.addEventListener('click', () => setYear(y));
-      evTrack.appendChild(b);
+    const maxN = Math.max.apply(null, Object.values(perYear));
+    const bars = document.createElement('div');
+    bars.className = 'cb-bars';
+    Object.keys(perYear).forEach(y => {
+      const b = document.createElement('i');
+      const h2 = 12 + (perYear[y] / maxN) * 30;
+      b.style.left = ((+y - S.start) / TOTAL) * 100 + '%';
+      b.style.height = h2 + '%';
+      b.title = y + ' 年：' + perYear[y] + ' 条大事';
+      bars.appendChild(b);
     });
-
-    // 中原王朝分期色带（梁唐晋汉周宋）
-    const band = $('#dynasty-band');
-    if (band) {
-      band.innerHTML = '';
-      const dynasties = [
-        ['tang', '唐'], ['houliang', '梁'], ['houtang', '唐'], ['houjin', '晋'],
-        ['houhan', '汉'], ['houzhou', '周'], ['song', '宋']
-      ];
-      dynasties.forEach(([id, short]) => {
-        const r = regimeById[id];
-        if (!r) return;
-        ATLAS.territories.filter(t => t.regime === id).forEach(t => {
-          const a = Math.max(t.from, S.start), b = Math.min(t.to, S.end + 1);
-          if (b <= a) return;
-          const seg = document.createElement('button');
-          seg.type = 'button';
-          seg.className = 'dyn-seg';
-          seg.style.left = ((a - S.start) / TOTAL) * 100 + '%';
-          seg.style.width = ((b - a) / TOTAL) * 100 + '%';
-          seg.style.background = r.color;
-          seg.title = r.name + '　' + a + '–' + (b - 1);
-          seg.textContent = (b - a) >= 6 ? short : '';
-          seg.addEventListener('click', () => { pause(); setYear(a); });
-          band.appendChild(seg);
-        });
-      });
-      // 改朝换代年的细标
-      [907, 923, 936, 947, 951, 960].forEach(y => {
-        const m = document.createElement('span');
-        m.className = 'dyn-mark';
-        m.style.left = ((y - S.start) / TOTAL) * 100 + '%';
-        m.title = y + ' 年改朝换代';
-        band.appendChild(m);
-      });
+    track.appendChild(bars);
+    // 十年刻度
+    const ticks = document.createElement('div');
+    ticks.className = 'cb-ticks';
+    for (let y = S.start; y <= S.end; y += 10) {
+      const t = document.createElement('span');
+      t.style.left = ((y - S.start) / TOTAL) * 100 + '%';
+      t.textContent = y;
+      ticks.appendChild(t);
     }
-  }
+    const last = document.createElement('span');
+    last.style.left = '100%'; last.textContent = S.end; last.style.transform = 'translateX(-100%)';
+    ticks.appendChild(last);
+    track.appendChild(ticks);
+    // 游标
+    const cur = document.createElement('div');
+    cur.className = 'cb-cursor';
+    cur.id = 'cb-cursor';
+    track.appendChild(cur);
 
+    // 点击 / 拖动 = 翻年
+    const yearAt = (ev) => {
+      const r = track.getBoundingClientRect();
+      const x = Math.max(0, Math.min(1, (ev.clientX - r.left) / r.width));
+      return Math.round(S.start + x * TOTAL);
+    };
+    let dragging = false;
+    track.addEventListener('pointerdown', (e) => { dragging = true; track.setPointerCapture(e.pointerId); pause(); setYear(yearAt(e)); });
+    track.addEventListener('pointermove', (e) => { if (dragging) setYear(yearAt(e)); });
+    track.addEventListener('pointerup', () => { dragging = false; });
+    track.addEventListener('pointercancel', () => { dragging = false; });
+  }
   function renderTimelineMarks() {
     const pct = ((state.year - S.start) / TOTAL) * 100;
-    $('#thumb').style.left = pct + '%';
-    $('#fill').style.width = pct + '%';
-    $('#slider').value = state.year;
+    const cur = $('#cb-cursor');
+    if (cur) cur.style.left = pct + '%';
+    const yb = $('#cb-year');
+    if (yb) yb.textContent = state.year;
   }
 
   function setYear(y) {
@@ -799,8 +806,7 @@
     if (state.playing) { pause(); return; }
     if (state.year >= S.end) state.year = S.start;
     state.playing = true;
-    $('#play').classList.add('on');
-    $('#play').textContent = '❚❚ 暂停';
+    const pb = $('#play'); if (pb) { pb.classList.add('on'); pb.textContent = '❚❚ 暂停'; }
     state.timer = setInterval(() => {
       if (state.year >= S.end) { pause(); return; }
       // 遇大事年稍作停顿
@@ -821,10 +827,7 @@
   }
 
   function bindControls() {
-    $('#slider').addEventListener('input', (e) => { pause(); setYear(+e.target.value); });
-    $('#play').addEventListener('click', play);
-    $('#prev').addEventListener('click', () => { pause(); setYear(state.year - 1); });
-    $('#next').addEventListener('click', () => { pause(); setYear(state.year + 1); });
+
     document.querySelectorAll('[data-year]').forEach(b => {
       b.addEventListener('click', () => { pause(); setYear(+b.getAttribute('data-year')); });
     });
@@ -842,7 +845,7 @@
       if (e.target.matches('input,textarea')) return;
       if (e.key === 'ArrowLeft') { pause(); setYear(state.year - 1); }
       if (e.key === 'ArrowRight') { pause(); setYear(state.year + 1); }
-      if (e.key === ' ') { e.preventDefault(); play(); }
+      if (e.key === ' ') { e.preventDefault(); pause(); setYear(state.year + 1); }
       if (e.key === 'Escape' && state.selected) { state.selected = null; renderAll(); }
     });
 
