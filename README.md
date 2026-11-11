@@ -8,7 +8,7 @@
 > 打开方式：双击 `index.html`，或访问 <https://jiangchengzhi-ai.github.io/FiveTen/>。
 
 > 交付总览、验证记录与已知限制见 [交付说明.md](交付说明.md)。
-> 数据来源与版权声明见 [NOTICE.md](NOTICE.md)。
+> 数据来源与版权声明见 [NOTICE.md](NOTICE.md)。　与参考项目《江山时序》的逐项对比见 [对比-江山时序.md](对比-江山时序.md)。
 
 仿照 [DeanChensj/jiangshan-map](https://github.com/DeanChensj/jiangshan-map)（江山时序）的做法，自建的**五代十国交互式疆域地图**：一条时间轴走完 907–979，逐年看政权兴替、疆域伸缩、都城与人物结局。
 
