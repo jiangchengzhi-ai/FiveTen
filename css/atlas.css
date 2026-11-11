@@ -1103,3 +1103,295 @@ html, body { max-width: 100%; overflow-x: hidden; }
   overflow: hidden; cursor: pointer;
 }
 .event p.open { display: block; -webkit-line-clamp: unset; }
+
+
+/* ==================================================================
+   沙盘主题（深色）· v3 — 军帐沙盘 / 乱世档案
+   默认主题；body[data-theme="paper"] 恢复原来的史册浅色。
+   ================================================================== */
+body[data-theme="sand"] {
+  --paper: #0b0908;
+  --paper-2: #0e0c0a;
+  --paper-3: #141110;
+  --ink: #e8dabb;
+  --ink-2: #cbb897;
+  --ink-3: #93826a;
+  --line: rgba(217, 201, 169, .20);
+  --line-2: rgba(217, 201, 169, .38);
+  --sea: #0e1513;
+  --sea-2: #121b18;
+  --accent: #c04433;
+  --accent-2: #d15a42;
+  --gold: #c39a4e;
+  --shadow: 0 10px 34px rgba(0, 0, 0, .55);
+  background: #0b0908;
+  color: var(--ink);
+}
+body[data-theme="sand"]::before {
+  content: "";
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(1100px 620px at 18% 0%, rgba(178, 58, 43, .10), transparent 62%),
+    radial-gradient(900px 520px at 88% 100%, rgba(110, 128, 120, .10), transparent 65%),
+    repeating-radial-gradient(circle at 50% 40%, rgba(217, 201, 169, .022) 0 1px, transparent 1px 26px),
+    repeating-linear-gradient(0deg, rgba(217, 201, 169, .018) 0 1px, transparent 1px 4px);
+}
+
+/* 顶栏 */
+body[data-theme="sand"] .top {
+  background: linear-gradient(180deg, rgba(20, 17, 14, .96), rgba(12, 10, 9, .9));
+  border-bottom: 1px solid var(--line);
+}
+body[data-theme="sand"] .brand { color: var(--ink); }
+body[data-theme="sand"] .brand .seal {
+  background: rgba(178, 58, 43, .14);
+  border-color: rgba(178, 58, 43, .55);
+  color: #d98a70;
+  transform: rotate(-2deg);
+}
+body[data-theme="sand"] .brand .range { color: var(--ink-3); }
+body[data-theme="sand"] .viewtabs {
+  background: rgba(217, 201, 169, .06);
+  border-color: var(--line);
+}
+body[data-theme="sand"] .viewtabs button { color: var(--ink-3); }
+body[data-theme="sand"] .viewtabs button.on {
+  background: rgba(178, 58, 43, .20);
+  color: #f0dfc0;
+  box-shadow: inset 0 0 0 1px rgba(178, 58, 43, .45);
+}
+body[data-theme="sand"] .chips button,
+body[data-theme="sand"] .layers label,
+body[data-theme="sand"] .help-btn,
+body[data-theme="sand"] .searchbox #search {
+  background: rgba(217, 201, 169, .05);
+  border-color: var(--line);
+  color: var(--ink-2);
+}
+body[data-theme="sand"] .chips button:hover,
+body[data-theme="sand"] .chips button.on,
+body[data-theme="sand"] .layers label:hover,
+body[data-theme="sand"] .help-btn:hover { border-color: var(--line-2); color: var(--ink); }
+body[data-theme="sand"] #search::placeholder { color: #7d6d55; }
+body[data-theme="sand"] .search-results {
+  background: rgba(16, 13, 11, .98);
+  border-color: var(--line-2);
+}
+body[data-theme="sand"] .sr-item:hover, body[data-theme="sand"] .sr-item.on {
+  background: rgba(178, 58, 43, .13);
+}
+
+/* 地图 */
+body[data-theme="sand"] .mapwrap { background: #0a0807; }
+body[data-theme="sand"] .mapwrap::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 4;
+  background: radial-gradient(120% 90% at 50% 45%, transparent 55%, rgba(0, 0, 0, .55) 100%);
+}
+body[data-theme="sand"] .land { fill: #16120f; stroke: rgba(217, 201, 169, .35); stroke-width: 1.1; }
+body[data-theme="sand"] .sea-inner { fill: #0d1412; }
+body[data-theme="sand"] .lake { fill: #101a17; stroke: rgba(110, 128, 120, .6); }
+body[data-theme="sand"] .river { stroke: rgba(126, 156, 150, .55); }
+body[data-theme="sand"] .river.major { stroke: rgba(140, 172, 164, .7); }
+body[data-theme="sand"] .grat line { stroke: rgba(217, 201, 169, .06); }
+body[data-theme="sand"] .mtn { fill: rgba(200, 180, 145, .55); }
+body[data-theme="sand"] .geolabel { fill: rgba(200, 180, 145, .45); }
+body[data-theme="sand"] .sealabel { fill: rgba(126, 156, 150, .55); }
+body[data-theme="sand"] .contour ellipse { fill: none; stroke: rgba(217, 201, 169, .07); stroke-width: .8; }
+body[data-theme="sand"] .map-hint { color: rgba(200, 180, 145, .55); }
+body[data-theme="sand"] #stage.far .place.rank3 .place-label { display: none; }
+
+/* 地名 / 政权名 */
+body[data-theme="sand"] .place rect { fill: #d9c9a9; }
+body[data-theme="sand"] .place circle { fill: #d9c9a9; }
+body[data-theme="sand"] .place.capital circle { fill: #d9573f; }
+body[data-theme="sand"] .place .halo { stroke: rgba(217, 87, 63, .5); }
+body[data-theme="sand"] .place-label {
+  fill: #e5d6b7;
+  stroke: rgba(10, 8, 7, .92);
+  stroke-width: 3.4px;
+}
+body[data-theme="sand"] .place.rank3 .place-label { fill: #b8a689; }
+body[data-theme="sand"] .regime-label {
+  stroke: rgba(10, 8, 7, .92);
+  filter: brightness(1.18) saturate(1.05);
+}
+
+/* 时间轴 */
+body[data-theme="sand"] .timeline {
+  background: linear-gradient(0deg, rgba(10, 9, 8, .98), rgba(16, 13, 11, .92));
+  border-top-color: var(--line);
+}
+body[data-theme="sand"] .controls button {
+  background: rgba(217, 201, 169, .06);
+  border-color: var(--line);
+  color: var(--ink-2);
+}
+body[data-theme="sand"] .controls button:hover { border-color: var(--line-2); color: var(--ink); }
+body[data-theme="sand"] .controls button.on { background: rgba(178, 58, 43, .22); color: #f0dfc0; }
+body[data-theme="sand"] .tick { background: rgba(217, 201, 169, .25); }
+body[data-theme="sand"] .tick.has-event { background: rgba(217, 201, 169, .45); }
+body[data-theme="sand"] .tick-label { color: var(--ink-3); }
+body[data-theme="sand"] .evdot { background: var(--accent); box-shadow: 0 0 6px rgba(192, 68, 51, .5); }
+body[data-theme="sand"] .rail { background: rgba(217, 201, 169, .16); }
+body[data-theme="sand"] #fill { background: linear-gradient(90deg, rgba(192, 68, 51, .5), var(--accent)); }
+body[data-theme="sand"] #thumb { background: #f0dfc0; box-shadow: 0 0 0 3px rgba(192, 68, 51, .35); }
+body[data-theme="sand"] .dyn-seg { opacity: .62; }
+body[data-theme="sand"] .dyn-mark { background: rgba(240, 223, 192, .5); }
+
+/* 侧栏 */
+body[data-theme="sand"] .side {
+  background: linear-gradient(180deg, rgba(14, 12, 10, .94), rgba(10, 9, 8, .98));
+  border-left-color: var(--line);
+}
+body[data-theme="sand"] .side h2 { color: var(--ink-3); border-bottom-color: var(--line); }
+body[data-theme="sand"] .side h2::after { background: var(--accent); }
+body[data-theme="sand"] .event { border-bottom-color: rgba(217, 201, 169, .12); }
+body[data-theme="sand"] .event p { color: var(--ink); }
+body[data-theme="sand"] .event .dot { background: var(--accent); }
+body[data-theme="sand"] .ev-src { color: var(--ink-3); }
+body[data-theme="sand"] .ev-person {
+  background: rgba(178, 58, 43, .14);
+  border-color: rgba(178, 58, 43, .38);
+  color: #e0a48f;
+}
+body[data-theme="sand"] .regime-chip {
+  background: rgba(217, 201, 169, .045);
+  border-color: var(--line);
+  color: var(--ink-2);
+}
+body[data-theme="sand"] .regime-chip:hover { border-color: var(--line-2); background: rgba(217, 201, 169, .08); }
+body[data-theme="sand"] .regime-chip .meta { color: var(--ink-3); }
+body[data-theme="sand"] .chg-row { color: var(--ink-2); border-bottom-color: rgba(217, 201, 169, .12); }
+body[data-theme="sand"] .chg-row:hover { background: rgba(217, 201, 169, .07); }
+body[data-theme="sand"] .detail h3 { color: var(--ink); }
+body[data-theme="sand"] .detail h3 small { color: var(--ink-3); }
+body[data-theme="sand"] .detail dt { color: var(--ink-3); }
+body[data-theme="sand"] .detail dd { color: var(--ink-2); }
+body[data-theme="sand"] .detail .sum { color: var(--ink-2); }
+body[data-theme="sand"] .detail .rulers th, body[data-theme="sand"] .detail .rulers td { border-color: rgba(217, 201, 169, .14); }
+body[data-theme="sand"] .detail .rulers th { color: var(--ink-3); }
+body[data-theme="sand"] .detail .note-row td { color: var(--ink-3); }
+body[data-theme="sand"] .detail .src { color: var(--ink-3); }
+body[data-theme="sand"] .rel-item {
+  background: rgba(217, 201, 169, .05);
+  border-color: var(--line);
+  color: var(--ink-2);
+}
+body[data-theme="sand"] .rel-item .rt { color: var(--ink-3); }
+body[data-theme="sand"] .year-big { color: var(--ink); }
+body[data-theme="sand"] .year-ganzhi, body[data-theme="sand"] .era-line { color: var(--ink-2); }
+body[data-theme="sand"] .foot-sources { color: var(--ink-3); }
+
+/* 图例 */
+body[data-theme="sand"] .map-legend {
+  background: rgba(12, 10, 9, .82);
+  border-color: var(--line);
+}
+body[data-theme="sand"] .lg-item { color: var(--ink-3); }
+body[data-theme="sand"] .map-controls button {
+  background: rgba(12, 10, 9, .78);
+  border-color: var(--line);
+  color: var(--ink-2);
+}
+body[data-theme="sand"] .map-controls button:hover { border-color: var(--line-2); color: var(--ink); }
+
+/* 人物 / 年表 / 数据 / 弹层 */
+body[data-theme="sand"] .peoplewrap, body[data-theme="sand"] .chronowrap, body[data-theme="sand"] .statswrap { background: #0b0908; }
+body[data-theme="sand"] .p-name { fill: #e5d6b7; stroke: rgba(10, 8, 7, .9); }
+body[data-theme="sand"] .p-node .ring { stroke: rgba(240, 223, 192, .5); }
+body[data-theme="sand"] .p-node.sel .ring { stroke: #f0dfc0; }
+body[data-theme="sand"] .people-legend, body[data-theme="sand"] .rel-legend {
+  background: rgba(12, 10, 9, .8); border-color: var(--line); color: var(--ink-3);
+}
+body[data-theme="sand"] .st-kpi, body[data-theme="sand"] .st-card {
+  background: rgba(217, 201, 169, .045);
+  border-color: var(--line);
+}
+body[data-theme="sand"] .st-kpi b { color: #d9694f; }
+body[data-theme="sand"] .st-kpi span, body[data-theme="sand"] .st-card h3 small { color: var(--ink-3); }
+body[data-theme="sand"] .st-card h3 { color: var(--ink-2); }
+body[data-theme="sand"] .st-check { border-bottom-color: rgba(217, 201, 169, .12); }
+body[data-theme="sand"] .st-name { color: var(--ink-2); }
+body[data-theme="sand"] .st-track { background: rgba(217, 201, 169, .12); }
+body[data-theme="sand"] .st-note, body[data-theme="sand"] .st-watch li { color: var(--ink-2); }
+body[data-theme="sand"] .help-panel, body[data-theme="sand"] .book-panel {
+  background: linear-gradient(180deg, #17130f, #100d0b);
+  border-color: var(--line-2);
+}
+body[data-theme="sand"] .help-modal { background: rgba(4, 3, 3, .72); }
+body[data-theme="sand"] .help-panel h2, body[data-theme="sand"] .book-panel h2 { color: var(--ink); }
+body[data-theme="sand"] .help-panel h3 { color: var(--ink-2); }
+body[data-theme="sand"] .help-panel p, body[data-theme="sand"] .help-panel li,
+body[data-theme="sand"] .help-lead, body[data-theme="sand"] .help-version { color: var(--ink-2); }
+body[data-theme="sand"] .help-panel code { background: rgba(217, 201, 169, .1); color: #d9b98a; }
+body[data-theme="sand"] .hp-stat, body[data-theme="sand"] .bk-ch {
+  background: rgba(217, 201, 169, .05);
+  border-color: var(--line);
+}
+body[data-theme="sand"] .bk-ch:hover { background: rgba(217, 201, 169, .1); }
+body[data-theme="sand"] .bk-ch.on { border-color: var(--accent); background: rgba(178, 58, 43, .16); }
+body[data-theme="sand"] .bk-vol h3 { color: var(--ink-2); border-bottom-color: var(--line); }
+body[data-theme="sand"] .bk-n { color: var(--ink); }
+body[data-theme="sand"] .bk-y { color: var(--ink-3); }
+body[data-theme="sand"] .tip { background: rgba(16, 13, 11, .96); border-color: var(--line-2); color: var(--ink); }
+body[data-theme="sand"] .tip-sub { color: var(--ink-3); }
+
+/* 细节点缀：面板四角刻度 */
+body[data-theme="sand"] .side::before {
+  content: ""; position: absolute; inset: 8px 8px auto auto; width: 14px; height: 14px;
+  border-top: 1px solid rgba(192, 68, 51, .45); border-right: 1px solid rgba(192, 68, 51, .45);
+  pointer-events: none;
+}
+body[data-theme="sand"] .side { position: relative; }
+
+/* 浅色主题（史册）保留原样；切换按钮文字由 JS 控制 */
+
+/* 修正：纸张噪点滤镜在深色主题下会露出浅色方块 */
+body[data-theme="sand"] .frame { display: none; }
+body[data-theme="sand"] #stage { filter: drop-shadow(0 14px 34px rgba(0, 0, 0, .55)); }
+body[data-theme="sand"] .sea { fill: #111d1a; }
+body[data-theme="sand"] .land { fill: #1b1613; }
+body[data-theme="sand"] .sea-inner { fill: #0f1a17; }
+body[data-theme="sand"] .river { stroke: rgba(128, 160, 154, .6); }
+body[data-theme="sand"] .river.major { stroke: rgba(150, 184, 176, .78); }
+body[data-theme="sand"] .lake { fill: #13221f; stroke: rgba(120, 152, 146, .7); }
+body[data-theme="sand"] .legend-item {
+  background: rgba(12, 10, 9, .8);
+  border-color: var(--line);
+  color: var(--ink-2);
+}
+body[data-theme="sand"] .legend-item:hover { background: rgba(217, 201, 169, .08); border-color: var(--line-2); }
+body[data-theme="sand"] .map-legend { background: rgba(10, 9, 8, .55); border: 1px solid var(--line); padding: 5px 6px; border-radius: 4px; }
+
+/* 沙盘主题收尾细节 */
+body[data-theme="sand"] .year-big {
+  color: #f0dfc0;
+  text-shadow: 0 0 26px rgba(192, 68, 51, .28);
+}
+body[data-theme="sand"] .side h2 { letter-spacing: .22em; }
+body[data-theme="sand"] .side h2::before {
+  content: "◆"; color: var(--accent); font-size: 8px; margin-right: 6px; vertical-align: 2px;
+}
+body[data-theme="sand"] .side h2::after { background: var(--accent); }
+body[data-theme="sand"] .mapwrap::before {
+  content: ""; position: absolute; inset: 7px; z-index: 3; pointer-events: none;
+  border: 1px solid rgba(217, 201, 169, .10);
+}
+body[data-theme="sand"] #terr-raster image { filter: saturate(1.16) brightness(1.02); }
+body[data-theme="sand"] .regime-label { letter-spacing: .22em; }
+body[data-theme="sand"] .evdot { opacity: .88; }
+body[data-theme="sand"] .brand .seal { font-weight: 600; }
+body[data-theme="sand"] .map-hint { letter-spacing: .14em; }
+body[data-theme="sand"] .timeline { box-shadow: 0 -18px 40px rgba(0, 0, 0, .35); }
+
+/* 沙盘主题：色彩与质感加强 */
+body[data-theme="sand"] #terr-raster image { filter: saturate(1.38) brightness(1.07) contrast(1.02); }
+body[data-theme="sand"] .contour ellipse { stroke: rgba(217, 201, 169, .11); stroke-width: 1; }
+body[data-theme="sand"] .sea { fill: #0d191c; }
+body[data-theme="sand"] .land { fill: #1d1815; }
+body[data-theme="sand"] .top { box-shadow: inset 0 -1px 0 rgba(192, 68, 51, .22); }
+body[data-theme="sand"] .evdot { opacity: .55; }
+body[data-theme="sand"] .tick.has-event { box-shadow: 0 0 6px rgba(192, 68, 51, .35); }
+body[data-theme="sand"] .legend-item { font-size: 11px; }
+body[data-theme="sand"] .map-legend { max-width: 62%; }
+body[data-theme="sand"] .detail h3 { text-shadow: 0 0 18px rgba(192, 68, 51, .18); }
