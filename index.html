@@ -47,7 +47,11 @@
   <main>
     <section class="mapwrap" aria-label="地图区">
       <div id="map"></div>
-      <div class="map-hint">滚轮缩放 · 拖拽平移 · 点击政权看人物</div>
+      <div class="map-hud">
+        <div class="hud-year" id="hud-year">950</div>
+        <div class="hud-meta"><span id="hud-era">后汉·乾祐三年</span><span id="hud-ganzhi">庚戌年</span></div>
+      </div>
+      <div class="map-hint">拖拽地图 · 滚轮缩放 · 点击政权</div>
       <div class="map-legend" id="legend" aria-label="本年政权图例"></div>
       <div class="map-controls">
         <button id="export-png" type="button" title="把当前地图存为 PNG">存图</button>
@@ -116,19 +120,12 @@
     </aside>
   </main>
 
-  <footer class="timeline" aria-label="时间轴">
-    <div class="controls">
-      <button id="prev" type="button" aria-label="上一年">◀</button>
-      <button id="play" type="button">▶ 播放</button>
-      <button id="next" type="button" aria-label="下一年">▶</button>
+  <footer class="chrono-bar" aria-label="纪年轴">
+    <div class="cb-left">
+      <b id="cb-year">950</b>
+      <span id="cb-label">后汉 · 乾祐三年</span>
     </div>
-    <div class="track">
-      <div id="ticks"></div>
-      <div id="dynasty-band" class="dynasty-band" aria-label="中原王朝分期带"></div>
-      <div id="event-track"></div>
-      <div class="rail"><div id="fill"></div><div id="thumb"></div></div>
-      <input id="slider" type="range" min="907" max="979" step="1" value="907" aria-label="年份">
-    </div>
+    <div class="cb-track" id="cb-track" role="slider" aria-label="年份" tabindex="0"></div>
   </footer>
 
 </div>
@@ -160,7 +157,7 @@
 
     <h3>操作</h3>
     <ul>
-      <li>拖动/点击底部时间轴；<b>空格</b>播放，<b>← →</b>逐年，<b>1–4</b>切视图，<b>?</b>开本面板，<b>Esc</b>关闭。</li>
+      <li>拖动/点击底部纪年轴翻年；<b>← →</b>逐年，<b>空格</b>下一年，<b>1–4</b>切视图，<b>?</b>开本面板，<b>Esc</b>关闭。</li>
       <li>顶栏搜索可搜「人物 / 政权 / 大事 / 州府」，命中后自动切视图、跳年份、选中对象。</li>
       <li>地址栏会同步成 <code>#view=people&amp;year=950</code>，复制即分享同一画面。</li>
     </ul>
