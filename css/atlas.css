@@ -1063,3 +1063,43 @@ html, body { max-width: 100%; overflow-x: hidden; }
 .bk-y { font-size: 10.5px; color: var(--ink-3); }
 @media (max-width: 900px) { .bk-chaps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px) { .bk-chaps { grid-template-columns: 1fr; } }
+
+
+/* ================= 视觉精修（v3） ================= */
+:root {
+  --sea: #cfe0e4;
+  --land: #f6ecd4;
+}
+.land { fill: #f6ecd4; stroke: #a38c66; stroke-width: 1.25; }
+.river.major { stroke-width: 2.4; opacity: .9; }
+.river.minor { stroke-width: 1.35; opacity: .72; }
+.lake { fill: #c9dcd9; stroke: #7d999b; stroke-width: .8; }
+.regime-label {
+  font-size: 19px;
+  letter-spacing: .2em;
+  stroke-width: 4.2px;
+  stroke: rgba(250, 244, 230, .92);
+}
+.place-label {
+  font-size: 12px;
+  fill: #342c20;
+  stroke: rgba(250, 244, 230, .95);
+  stroke-width: 3.2px;
+}
+.place.capital .place-label { font-size: 13.5px; font-weight: 600; }
+.place.rank3 .place-label { font-size: 10.8px; fill: #5a4f3e; }
+.place circle { fill: #6b5a3f; }
+.place.capital circle { fill: #a63b2f; }
+/* 远处仍显示主要州府，隐藏三级小地名 */
+#stage.far .place.rank3 .place-label { display: none; }
+#stage.far .place.rank2 .place-label, #stage.far .place.capital .place-label { display: block; }
+.mtn { font-size: 11.5px; }
+.geolabel { font-size: 13px; }
+.sealabel { font-size: 13px; letter-spacing: .5em; }
+
+/* 大事文本：默认 6 行，点击展开 */
+.event p {
+  display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical;
+  overflow: hidden; cursor: pointer;
+}
+.event p.open { display: block; -webkit-line-clamp: unset; }
