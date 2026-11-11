@@ -23,6 +23,8 @@
       <button data-view="people" role="tab">人物</button>
       <button data-view="chrono" role="tab">年表</button>
       <button data-view="stats" role="tab">数据</button>
+      <button data-view="battle" role="tab">战役</button>
+      <button data-view="politics" role="tab">博弈</button>
     </div>
     <div class="chips" role="group" aria-label="分幕跳转">
       <button data-year="907">梁晋争霸</button>
@@ -58,6 +60,7 @@
         <button id="reset-view" type="button">复位视图</button>
       </div>
       <div class="tip" id="tip" hidden></div>
+      <div class="battle-panel" id="battle-panel" hidden></div>
     </section>
 
     <section class="peoplewrap" id="people-wrap" aria-label="人物关系图" hidden>
@@ -77,6 +80,18 @@
 
     <section class="statswrap" id="stats-wrap" aria-label="数据概览与自检" hidden>
       <div id="stats-body"></div>
+    </section>
+
+    <section class="battlewrap" id="battle-wrap" aria-label="战役复盘" hidden>
+      <div class="bw-head">
+        <h2>战役复盘</h2>
+        <p>点一场战役 → 跳到该年地图，显示双方将领、兵力与行军路线；路线可重演。</p>
+      </div>
+      <div id="battle-list" class="battle-list"></div>
+    </section>
+
+    <section class="politicswrap" id="politics-wrap" aria-label="政治博弈" hidden>
+      <div id="politics-body"></div>
     </section>
 
     <aside class="side" aria-label="信息栏">
@@ -147,12 +162,14 @@
     <p class="help-lead">一条时间轴走完 875–979：疆域怎么变，人物怎么上位与退场，关系怎么结成与断裂。</p>
     <div id="hp-stats" class="hp-stats"></div>
 
-    <h3>四个视图</h3>
+    <h3>六个视图</h3>
     <ul>
       <li><b>疆域</b>：逐年/分期疆域，点政权看君主世系与结局，滚轮缩放、拖拽平移。</li>
       <li><b>人物</b>：按政权分簇的关系网，随年份增减；侧栏给出「本年结局」与「本年关系变化」。</li>
       <li><b>年表</b>：政权寿命横条 + 大事年刻，一眼看谁先亡、谁与谁并存。</li>
       <li><b>数据</b>：规模指标、9 项完整性自检、每十年事件数、政权寿命、结局与关系分布。</li>
+      <li><b>战役</b>：16 场关键战役复盘，点开看双方将领、兵力、行军路线（可重演）。</li>
+      <li><b>博弈</b>：按疆域面积示意势力强弱，8 个关键政治抉择复盘。</li>
     </ul>
 
     <h3>操作</h3>
@@ -178,6 +195,7 @@
 <script src="js/stats-view.js"></script>
 <script src="js/search.js"></script>
 <script src="js/help.js"></script>
+<script src="js/battles.js"></script>
 <script src="js/book-chapters.js"></script>
 <script src="js/book.js"></script>
 <script src="js/export.js"></script>
