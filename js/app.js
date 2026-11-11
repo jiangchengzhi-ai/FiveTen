@@ -42,6 +42,15 @@
   }
 
   const $ = (sel) => document.querySelector(sel);
+  const THEME_KEY = 'atlas-theme';
+  const isSand = () => (document.body.dataset.theme || 'sand') === 'sand';
+  function applyTheme(t) {
+    document.body.dataset.theme = t;
+    const seal = document.querySelector('.brand .seal');
+    if (seal) seal.textContent = t === 'sand' ? '沙盘' : '疆域时序';
+    try { localStorage.setItem(THEME_KEY, t); } catch (e) { }
+    if (gTerritory) renderAll();
+  }
   const regimeById = {};
   ATLAS.regimes.forEach(r => { regimeById[r.id] = r; });
 
@@ -84,6 +93,25 @@
     svgEl('rect', { x: 0, y: 0, width: W, height: H, class: 'sea' }, gStatic);
     // 陆块
     svgEl('path', { d: pathOf(chaikin(GEO.coastline, 1), true), class: 'land' }, gStatic);
+    try {
+      const clip = document.createElementNS(NS, 'clipPath');
+      clip.setAttribute('id', 'landclip');
+      const cp = document.createElementNS(NS, 'path');
+      cp.setAttribute('d', pathOf(chaikin(GEO.coastline, 1), true));
+      clip.appendChild(cp);
+      defs.appendChild(clip);
+      const gc = svgEl('g', { class: 'contour', 'clip-path': 'url(#landclip)' }, gStatic);
+      [[110, 35, 34], [118, 30, 26], [106, 40, 24]].forEach(([lon, lat, R]) => {
+        const [cx, cy] = proj(lon, lat);
+        for (let k = 6; k <= R; k += 4) {
+          const e = document.createElementNS(NS, 'ellipse');
+          e.setAttribute('cx', cx.toFixed(1)); e.setAttribute('cy', cy.toFixed(1));
+          e.setAttribute('rx', (k * 13).toFixed(1)); e.setAttribute('ry', (k * 9).toFixed(1));
+          e.setAttribute('transform', 'rotate(' + (-12 + k) + ' ' + cx.toFixed(1) + ' ' + cy.toFixed(1) + ')');
+          gc.appendChild(e);
+        }
+      });
+    } catch (e) { }
     // 被简化海岸包住的海湾
     GEO.seas.forEach(s => svgEl('path', { d: pathOf(s.pts, true), class: 'sea-inner' }, gStatic));
     // 岛屿
@@ -161,7 +189,8 @@
       const [x, y] = proj(c.lon, c.lat);
       const rank = c.rank || (c.type === 'capital' ? 1 : 2);
       const g = svgEl('g', { class: 'place ' + c.type + ' rank' + rank, transform: `translate(${x.toFixed(1)},${y.toFixed(1)})` }, gPlaces);
-      svgEl('circle', { r: c.type === 'capital' ? 5.2 : 2.6 }, g);
+      if (c.type === 'capital') svgEl('circle', { r: 5.2 }, g);
+      else svgEl('rect', { x: -2.4, y: -2.4, width: 4.8, height: 4.8 }, g);
       if (c.type === 'capital') svgEl('circle', { r: 9.5, class: 'halo' }, g);
       const fs2 = rank === 1 ? 13.5 : rank === 2 ? 12 : 10.8;
       const w = c.name.length * fs2 * 1.02 + 6, h = fs2 + 3;
@@ -331,16 +360,18 @@
         const right = x < cw - 1 ? ids[i + 1] : 0;
         const down = y < ch - 1 ? ids[i + cw] : 0;
         let r = 0, g = 0, b = 0, a = 0;
-        if (coast) { r = 66; g = 48; b = 28; a = 225; }
+        const dark = isSand();
+        if (coast) { if (dark) { r = 232; g = 216; b = 182; a = 210; } else { r = 66; g = 48; b = 28; a = 225; } }
         else if (v !== right || v !== down) {
           const selId = state.selected ? idx.get(state.selected) : 0;
-          if (selId && v === selId) { r = 166; g = 59; b = 47; a = 240; }
-          else if (gainedSet.has(v)) { r = 166; g = 59; b = 47; a = 230; }
+          if (selId && v === selId) { r = 226; g = 96; b = 74; a = 245; }
+          else if (gainedSet.has(v)) { r = 226; g = 96; b = 74; a = 235; }
+          else if (dark) { r = 224; g = 208; b = 174; a = 150; }
           else { r = 62; g = 46; b = 28; a = 205; }
         } else if (v) {
           const c = pal[v - 1];
           r = c[0]; g = c[1]; b = c[2];
-          a = dimAll && seq[v - 1] !== dimAll ? 28 : 172;
+          a = dimAll && seq[v - 1] !== dimAll ? (isSand() ? 22 : 28) : (isSand() ? 190 : 172);
         }
         if (a) { od[o] = r; od[o + 1] = g; od[o + 2] = b; od[o + 3] = a; }
       }
@@ -751,6 +782,13 @@
     });
     svg.addEventListener('pointerup', () => { dragging = false; svg._justDragged = moved; });
     svg.addEventListener('pointercancel', () => { dragging = false; });
+    const tb = $('#theme-btn');
+    if (tb) { tb.textContent = isSand() ? '☀' : '◐'; tb.title = isSand() ? '切换到史册（浅色）' : '切换到沙盘（深色）'; }
+    if (tb) tb.addEventListener('click', () => {
+      applyTheme(isSand() ? 'paper' : 'sand');
+      tb.textContent = isSand() ? '☀' : '◐';
+      tb.title = isSand() ? '切换到史册（浅色）' : '切换到沙盘（深色）';
+    });
     $('#reset-view').addEventListener('click', () => {
       scale = 1; tx = 0; ty = 0; apply();
     });
@@ -812,6 +850,11 @@
 
   /* ---------------- 启动 ---------------- */
   function boot() {
+    let savedTheme = 'sand';
+    try { savedTheme = localStorage.getItem(THEME_KEY) || 'sand'; } catch (e) { }
+    document.body.dataset.theme = savedTheme;
+    const seal0 = document.querySelector('.brand .seal');
+    if (seal0) seal0.textContent = savedTheme === 'sand' ? '沙盘' : '疆域时序';
     const wantHit = /hittest/.test(location.hash);
     buildMap();
     buildTimeline();
