@@ -1,0 +1,21 @@
+{
+  "source": "AWS Open Data – Terrain Tiles (Terrarium)",
+  "underlying": [
+    "SRTM",
+    "GMTED2010",
+    "ETOPO1"
+  ],
+  "license": "Public domain (NASA/USGS/NOAA)",
+  "zoom": 7,
+  "grid": 1024,
+  "bounds": {
+    "lon0": 100,
+    "lon1": 126,
+    "lat0": 17,
+    "lat1": 43
+  },
+  "elevationMin": -7077.4,
+  "elevationMax": 6331.5,
+  "seaLevel": 0,
+  "note": "现代地形，非五代十国时期；仅作沙盘起伏示意。"
+}

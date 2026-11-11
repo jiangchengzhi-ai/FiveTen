@@ -23,3 +23,6 @@ research/麦老师书稿-目录.md
 # 与本项目无关的本地文件
 history-skills/
 
+
+# 地形瓦片缓存（可由 scripts/fetch-terrain.js 重新下载）
+data/.tiles/
