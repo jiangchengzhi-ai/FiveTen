@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>五代十国·沙盘 — 差异化设计板</title>
+<style>
+  :root{
+    --ink:#12100e; --ink2:#1c1813; --paper:#f3e9d6; --sand:#d9c9a9;
+    --zhu:#b23a2b; --qing:#6e8078; --jin:#b08a3e; --line:rgba(217,201,169,.22);
+    --serif:"Songti SC","SimSun","Source Han Serif SC",serif;
+    --kai:"KaiTi","STKaiti",serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0b0908;color:var(--sand);font-family:var(--serif);padding:44px 52px 34px}
+  h1{font-size:34px;letter-spacing:.14em;font-weight:600}
+  h1 small{font-size:14px;color:#8d7c62;letter-spacing:.2em;margin-left:14px;font-weight:400}
+  .lead{color:#a8967a;font-size:14px;margin:12px 0 34px;line-height:1.9}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .card{background:linear-gradient(180deg,#171310,#12100e);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .card .mock{height:210px;position:relative;overflow:hidden}
+  .card .body{padding:16px 18px 18px}
+  .card h2{font-size:20px;letter-spacing:.1em;display:flex;align-items:baseline;gap:8px}
+  .card h2 b{font-size:12px;color:var(--jin);font-weight:400;letter-spacing:.16em}
+  .card p{font-size:13px;line-height:1.85;color:#a8967a;margin-top:10px}
+  .chips{display:flex;gap:6px;margin-top:12px}
+  .chips i{width:22px;height:22px;border-radius:4px;display:block;border:1px solid rgba(255,255,255,.08)}
+
+  /* A 史册 */
+  .mock.a{background:#efe4cd}
+  .a .paperline{position:absolute;left:26px;right:26px;top:28px;height:1px;background:rgba(80,60,30,.18)}
+  .a .vtitle{position:absolute;left:28px;top:36px;writing-mode:vertical-rl;font-family:var(--kai);font-size:17px;color:#2b2419;letter-spacing:.3em}
+  .a .blk{position:absolute;right:26px;top:38px;width:120px;height:130px;background:repeating-linear-gradient(0deg,rgba(60,45,25,.28) 0 1px,transparent 1px 9px),#eadcc0;border:1px solid rgba(120,95,55,.35)}
+  .a .zhu{position:absolute;right:36px;top:176px;width:44px;height:44px;border:2px solid var(--zhu);color:var(--zhu);font-size:10px;display:grid;place-items:center;transform:rotate(-4deg);border-radius:3px;opacity:.85}
+
+  /* B 沙盘 */
+  .mock.b{background:radial-gradient(120% 100% at 30% 20%,#1e2a26 0%,#12100e 62%)}
+  .b .contour{position:absolute;inset:0;background:
+     repeating-radial-gradient(circle at 34% 40%,rgba(110,128,120,.16) 0 1px,transparent 1px 16px),
+     repeating-linear-gradient(0deg,rgba(217,201,169,.05) 0 1px,transparent 1px 22px)}
+  .b .terr{position:absolute;left:110px;top:44px;width:190px;height:110px;background:rgba(178,58,43,.38);clip-path:polygon(0 40%,18% 12%,46% 4%,72% 20%,100% 12%,92% 62%,68% 88%,34% 96%,8% 74%);border:1px solid rgba(178,58,43,.7)}
+  .b .arrow{position:absolute;left:150px;top:118px;width:110px;height:2px;background:var(--zhu);transform:rotate(-18deg)}
+  .b .arrow:after{content:"";position:absolute;right:-1px;top:-4px;border-left:9px solid var(--zhu);border-top:5px solid transparent;border-bottom:5px solid transparent}
+  .b .pin{position:absolute;left:196px;top:96px;width:7px;height:7px;background:var(--sand);transform:rotate(45deg)}
+  .b .label{position:absolute;left:236px;top:74px;font-family:var(--kai);font-size:13px;color:#e7d8b8;letter-spacing:.14em}
+
+  /* C 星图 */
+  .mock.c{background:radial-gradient(circle at 50% 55%,#161a26 0%,#0b0a0c 70%)}
+  .c .node{position:absolute;border-radius:50%;background:#d9c9a9;box-shadow:0 0 10px rgba(217,201,169,.5)}
+  .c .ring{position:absolute;border:1px solid rgba(178,58,43,.55);border-radius:50%}
+  .c svg{position:absolute;inset:0}
+
+  .rec{margin-top:30px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:linear-gradient(180deg,#151210,#0f0d0b);display:grid;grid-template-columns:1.35fr 1fr}
+  .rec .stage{padding:22px 24px;border-right:1px solid var(--line);position:relative}
+  .rec .stage h3{font-size:16px;letter-spacing:.14em;color:var(--sand)}
+  .rec .stage .sub{font-size:12px;color:#8d7c62;margin-top:6px}
+  .ui{margin-top:16px;height:360px;border:1px solid rgba(217,201,169,.16);border-radius:8px;overflow:hidden;display:grid;grid-template-columns:172px 1fr 236px;background:#141110}
+  .ui .left{border-right:1px solid rgba(217,201,169,.1);padding:10px}
+  .ui .left .li{display:flex;align-items:center;gap:7px;font-size:11.5px;color:#b8a98d;padding:5px 4px;border-bottom:1px dashed rgba(217,201,169,.08)}
+  .ui .left .sw{width:9px;height:9px;border-radius:2px;background:var(--qing)}
+  .ui .map{position:relative;background:radial-gradient(120% 100% at 40% 30%,#1c2622,#12100e 70%)}
+  .ui .map .c2{position:absolute;inset:0;background:repeating-radial-gradient(circle at 44% 46%,rgba(110,128,120,.14) 0 1px,transparent 1px 15px)}
+  .ui .map .blob{position:absolute;border:1px solid rgba(217,201,169,.18)}
+  .ui .map .blob.r{background:rgba(178,58,43,.4);border-color:rgba(178,58,43,.75)}
+  .ui .map .blob.g{background:rgba(110,128,120,.35);border-color:rgba(110,128,120,.6)}
+  .ui .map .tag{position:absolute;font-family:var(--kai);font-size:12px;color:#e8d9ba;letter-spacing:.12em}
+  .ui .right{border-left:1px solid rgba(217,201,169,.1);padding:10px;background:#17130f}
+  .ui .right .ev{font-size:11.5px;line-height:1.7;color:#bda985;padding:6px 0;border-bottom:1px dashed rgba(217,201,169,.1)}
+  .ui .right .ev b{color:var(--zhu);font-weight:400;margin-right:4px}
+  .ui .foot{grid-column:1/-1;height:34px;border-top:1px solid rgba(217,201,169,.1);display:flex;align-items:center;padding:0 10px;gap:3px;background:#100e0c}
+  .ui .foot i{flex:1;height:3px;background:rgba(217,201,169,.14);position:relative}
+  .ui .foot i.on{background:var(--zhu)}
+  .rec .side{padding:22px 24px}
+  .rec .side h4{font-size:13px;color:var(--jin);letter-spacing:.16em;font-weight:400}
+  .rec .side ul{margin:10px 0 18px 16px}
+  .rec .side li{font-size:12.5px;line-height:1.95;color:#b8a98d}
+  .rec .side li b{color:var(--sand);font-weight:400}
+
+  .strip{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-top:26px}
+  .swcard{border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  .swcard .c{height:74px}
+  .swcard .n{padding:8px 10px;font-size:11.5px;color:#a8967a;background:#12100e}
+  .swcard .n b{display:block;color:var(--sand);font-size:12.5px;margin-bottom:2px;font-weight:400}
+  .type{margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .type .box{border:1px solid var(--line);border-radius:10px;padding:18px 20px;background:#12100e}
+  .type .box span{font-size:11px;color:var(--jin);letter-spacing:.16em}
+  .type .t1{font-size:26px;letter-spacing:.2em;margin-top:10px}
+  .type .t2{font-family:var(--kai);font-size:18px;color:#c9b795;margin-top:8px;letter-spacing:.16em}
+  .type .t3{font-size:12px;color:#8d7c62;margin-top:10px;line-height:1.9}
+  .road{margin-top:26px;border:1px solid var(--line);border-radius:10px;padding:20px 24px;background:#12100e}
+  .road h3{font-size:14px;color:var(--sand);letter-spacing:.16em;font-weight:400}
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:14px}
+  .step{border-left:2px solid var(--zhu);padding-left:12px}
+  .step b{display:block;font-size:12px;color:var(--jin);font-weight:400;letter-spacing:.1em}
+  .step span{display:block;font-size:12px;color:#b8a98d;line-height:1.7;margin-top:5px}
+  .foot-note{margin-top:18px;font-size:11.5px;color:#7d6d55}
+</style>
+</head>
+<body>
+  <h1>五代十国 · 沙盘 <small>差异化设计板 · 2026-11-11</small></h1>
+  <p class="lead">参考项目做「两千年的舆图长卷」，我们做「七十三年的势力沙盘 + 人物档案」。不在广度上比，在深度与叙事上另开一桌。</p>
+
+  <div class="grid">
+    <div class="card">
+      <div class="mock a">
+        <div class="paperline"></div>
+        <div class="vtitle">梁唐晋汉周</div>
+        <div class="blk"></div>
+        <div class="zhu">朱批</div>
+      </div>
+      <div class="body">
+        <h2>方向 A 史册朱批 <b>DOCUMENT</b></h2>
+        <p>浅米纸、墨字、朱红眉批。像一本带地图的史书，适合列传与章回阅读。缺点是仍带纸感，和参考项目的宣纸气质有重叠。</p>
+        <div class="chips"><i style="background:#efe4cd"></i><i style="background:#2b2419"></i><i style="background:#b23a2b"></i><i style="background:#b08a3e"></i></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="mock b">
+        <div class="contour"></div>
+        <div class="terr"></div>
+        <div class="arrow"></div>
+        <div class="pin"></div>
+        <div class="label">后唐 · 同光</div>
+      </div>
+      <div class="body">
+        <h2>方向 B 墨色沙盘 <b>WAR ROOM ★</b></h2>
+        <p>炭黑底、等高线、朱砂势力与箭头。第一眼就和「暖宣纸」区分开，像军帐推演；疆域、战争、政变成为舞台中心。</p>
+        <div class="chips"><i style="background:#12100e"></i><i style="background:#1c1813"></i><i style="background:#b23a2b"></i><i style="background:#6e8078"></i><i style="background:#d9c9a9"></i></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="mock c">
+        <svg viewBox="0 0 300 210">
+          <line x1="80" y1="120" x2="150" y2="70" stroke="rgba(178,58,43,.5)" stroke-width="1"/>
+          <line x1="150" y1="70" x2="220" y2="120" stroke="rgba(217,201,169,.35)" stroke-width="1"/>
+          <line x1="150" y1="70" x2="160" y2="160" stroke="rgba(110,128,120,.6)" stroke-width="1"/>
+          <line x1="80" y1="120" x2="160" y2="160" stroke="rgba(217,201,169,.28)" stroke-width="1"/>
+          <line x1="220" y1="120" x2="160" y2="160" stroke="rgba(217,201,169,.28)" stroke-width="1"/>
+        </svg>
+        <div class="node" style="left:74px;top:114px;width:12px;height:12px"></div>
+        <div class="node" style="left:144px;top:64px;width:15px;height:15px;background:#b23a2b;box-shadow:0 0 14px rgba(178,58,43,.7)"></div>
+        <div class="node" style="left:214px;top:114px;width:10px;height:10px"></div>
+        <div class="node" style="left:154px;top:154px;width:11px;height:11px;background:#6e8078"></div>
+        <div class="ring" style="left:128px;top:48px;width:46px;height:46px"></div>
+      </div>
+      <div class="body">
+        <h2>方向 C 关系星图 <b>CONSTELLATION</b></h2>
+        <p>人物为星、关系为弧、政权为星团。我们独有的 331 条关系天然适配；但单独做会脱离「地图」，适合作为第二主视图。</p>
+        <div class="chips"><i style="background:#0b0a0c"></i><i style="background:#161a26"></i><i style="background:#b23a2b"></i><i style="background:#d9c9a9"></i><i style="background:#6e8078"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="stage">
+      <h3>推荐组合：B 作壳 + C 作核 + A 作局部</h3>
+      <div class="sub">默认进入「年份舞台」：墨色沙盘 + 一年一屏；点人进入星图列传；读章回切浅色史册模式。</div>
+      <div class="ui">
+        <div class="left">
+          <div class="li"><span class="sw" style="background:#b23a2b"></span>后汉 <span style="margin-left:auto;color:#7d6d55">947–951</span></div>
+          <div class="li"><span class="sw" style="background:#6e8078"></span>南唐 <span style="margin-left:auto;color:#7d6d55">937–975</span></div>
+          <div class="li"><span class="sw" style="background:#b08a3e"></span>楚 <span style="margin-left:auto;color:#7d6d55">907–951</span></div>
+          <div class="li"><span class="sw" style="background:#8a6a4a"></span>后蜀 <span style="margin-left:auto;color:#7d6d55">934–965</span></div>
+          <div class="li"><span class="sw" style="background:#7f9aa6"></span>吴越 <span style="margin-left:auto;color:#7d6d55">907–978</span></div>
+          <div class="li"><span class="sw" style="background:#9a8c72"></span>辽 <span style="margin-left:auto;color:#7d6d55">907–1125</span></div>
+        </div>
+        <div class="map">
+          <div class="c2"></div>
+          <div class="blob r" style="left:34%;top:30%;width:44%;height:34%;border-radius:46% 40% 42% 48%;transform:rotate(-8deg)"></div>
+          <div class="blob g" style="left:52%;top:56%;width:26%;height:22%;border-radius:44% 50% 46% 40%"></div>
+          <div class="blob g" style="left:64%;top:38%;width:20%;height:18%;border-radius:50%"></div>
+          <div class="tag" style="left:44%;top:40%">后汉</div>
+          <div class="tag" style="left:58%;top:64%">南唐</div>
+          <div class="tag" style="left:68%;top:44%;font-size:11px">吴越</div>
+        </div>
+        <div class="right">
+          <div class="ev"><b>二月</b>南唐军袭击福州，为吴越军击败</div>
+          <div class="ev"><b>四月</b>郭威任邺都留守，节制河北</div>
+          <div class="ev"><b>十一月</b>广政殿之变，三臣被杀</div>
+          <div class="ev"><b>十二月</b>澶州兵变，黄袍加身</div>
+        </div>
+        <div class="foot">
+          <span style="font-size:9px;color:#7d6d55;margin-right:6px">875</span>
+          <i></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i><i></i>
+          <span style="font-size:9px;color:#7d6d55;margin-left:6px">979</span>
+        </div>
+      </div>
+    </div>
+    <div class="side">
+      <h4>为什么这样分</h4>
+      <ul>
+        <li><b>B 作壳</b>：第一眼反差——它暖纸、我们墨沙；它地形、我们等高线。</li>
+        <li><b>C 作核</b>：331 条关系是它没有的资产，星图能形成记忆点。</li>
+        <li><b>A 作局部</b>：长文阅读时切浅色，兼顾章回与列传。</li>
+      </ul>
+      <h4>明确不做</h4>
+      <ul>
+        <li>不做 2400 年通史、不做 CHGIS 州府边界竞赛</li>
+        <li>不做诗词路线、寻址游戏、多语言（第一期）</li>
+        <li>不复制书稿原文，只做年表与自拟摘要</li>
+      </ul>
+      <h4>验收标准</h4>
+      <ul>
+        <li>随机年份 / 政权 / 人物 → <b>3 次点击内</b>看到「发生了什么、谁参与、结局如何」。</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="strip">
+    <div class="swcard"><div class="c" style="background:#12100e"></div><div class="n"><b>炭黑</b>#12100E 底</div></div>
+    <div class="swcard"><div class="c" style="background:#1C1813"></div><div class="n"><b>墨</b>#1C1813 面板</div></div>
+    <div class="swcard"><div class="c" style="background:#B23A2B"></div><div class="n"><b>朱砂</b>#B23A2B 强调</div></div>
+    <div class="swcard"><div class="c" style="background:#D9C9A9"></div><div class="n"><b>沙</b>#D9C9A9 正文</div></div>
+    <div class="swcard"><div class="c" style="background:#6E8078"></div><div class="n"><b>青灰</b>#6E8078 水系</div></div>
+    <div class="swcard"><div class="c" style="background:#B08A3E"></div><div class="n"><b>金</b>#B08A3E 年号</div></div>
+  </div>
+
+  <div class="type">
+    <div class="box">
+      <span>标题 · 宋体</span>
+      <div class="t1">后汉 · 乾祐三年</div>
+      <div class="t2">七十三年的分合，三十余政权的兴亡</div>
+      <div class="t3">标题用宋体撑住“史书”的气质；副题用楷体，像眉批。</div>
+    </div>
+    <div class="box">
+      <span>图形语言</span>
+      <div class="t2">等高线 · 势力箭头 · 城池方点 · 关系弧线</div>
+      <div class="t3">城池用方点（区别于参考项目的圆点）；战争用箭头；关系用弧线；政权用等高线描边色块。</div>
+    </div>
+  </div>
+
+  <div class="road">
+    <h3>90 天落地路线</h3>
+    <div class="steps">
+      <div class="step"><b>1–2 周</b><span>深色主题系统 + 总览页（可切换主题）</span></div>
+      <div class="step"><b>3–6 周</b><span>人物列传页 + 关系联动（星图 + 结局卡）</span></div>
+      <div class="step"><b>7–9 周</b><span>政权本纪：寿命曲线、亡国结局、相关人物</span></div>
+      <div class="step"><b>10–12 周</b><span>章回阅读模式 + 校勘页改版</span></div>
+    </div>
+  </div>
+
+  <p class="foot-note">详细方案见《设计方案-差异化.md》。参考项目：江山时序 jiangshan-map（GPL-3.0）；本项目不改用其数据与视觉。</p>
+</body>
+</html>
